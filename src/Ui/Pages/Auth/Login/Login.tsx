@@ -37,11 +37,32 @@ export const Login = () => {
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: { email?: string; password?: string } = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    if (!validateForm()) return;
 
     try {
       // Call login mutation
@@ -114,7 +135,7 @@ export const Login = () => {
             <Button
               type="submit"
               disabled={loginMutation.isPending}
-              className="w-full bg-baseColor hover:bg-hoverColor text-white"
+              className="w-full bg-baseColor hover:bg-hoverColor text-white cursor-pointer"
             >
               {loginMutation.isPending ? "Logging in..." : "Login"}
             </Button>

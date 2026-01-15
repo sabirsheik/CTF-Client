@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
+* {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -48,9 +54,9 @@
 }
 
 :root {
-  --baseColor: #10823b;
+  --baseColor: #000000;
   --localColor: #000000;
-  --hoverColor: #0e6f2d;
+  --hoverColor: #161616;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

@@ -152,7 +152,7 @@ export const Register = () => {
             <CardFooter className="flex flex-col gap-4 mt-4">
               <Button
                 type="submit"
-                className="w-full bg-baseColor hover:bg-hoverColor"
+                className="w-full bg-baseColor hover:bg-hoverColor cursor-pointer"
                 disabled={signupMutation.isPending}
               >
                 {signupMutation.isPending
