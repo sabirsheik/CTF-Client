@@ -25,7 +25,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-export default function Register() {
+export const Register = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -218,4 +218,4 @@ export default function Register() {
       </Dialog>
     </>
   );
-}
+};

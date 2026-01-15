@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+// Hooks to handle user authentication
 import { useUser, useLogin } from "../../../../Hook/Auth/useAuth";
 import { toast } from "sonner";
 
@@ -16,18 +17,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-
-export default function Login() {
+// Login Component
+export const Login = () => {
+  // State variables
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
-
   const navigate = useNavigate();
+  // Hooks for user data and login mutation
   const { refetch: fetchUser } = useUser();
   const loginMutation = useLogin();
-
+  //  Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Update form data state based on input changes
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -35,14 +38,17 @@ export default function Login() {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
-
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
     try {
+      // Call login mutation
       const res = await loginMutation.mutateAsync(formData);
+      // On success, show success message and fetch user data
       toast.success(res.message || "Login successful");
+      // Fetch user data and navigate to dashboard
       fetchUser();
       navigate("/dashboard");
     } catch (err: any) {
@@ -138,4 +144,4 @@ export default function Login() {
       </Card>
     </div>
   );
-}
+};

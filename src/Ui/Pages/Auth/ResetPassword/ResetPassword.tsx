@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 
-const ResetPassword = () => {
+export const ResetPassword = () => {
   const [formData, setFormData] = useState({
     newPassword: "",
     confirmPassword: "",
@@ -180,5 +180,3 @@ const ResetPassword = () => {
     </div>
   );
 };
-
-export default ResetPassword;
