@@ -17,10 +17,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Eye, EyeOff } from "lucide-react";
 // Login Component
 export const Login = () => {
   // State variables
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showNew, setShowNew] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
@@ -117,14 +119,23 @@ export const Login = () => {
             {/* Password */}
             <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input
+             <div className="relative">
+               <Input
                 id="password"
                 name="password"
-                type="password"
+                type={showNew ? "text" : "password"}
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
               />
+               <button
+                type="button"
+                onClick={() => setShowNew(!showNew)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
+              >
+                {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+             </div>
               {errors.password && (
                 <p className="text-xs text-red-600">{errors.password}</p>
               )}

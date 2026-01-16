@@ -24,15 +24,28 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Eye, EyeOff } from "lucide-react";
 
 export const Register = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  // ✅ ADDED fields ONLY
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    universityName: "",
+    phoneNumber: "",
+    password: "",
+  });
+
+  const [showNew, setShowNew] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [errors, setErrors] = useState<{
+    username?: string;
     email?: string;
+    universityName?: string;
+    phoneNumber?: string;
     password?: string;
     otp?: string;
   }>({});
@@ -40,20 +53,38 @@ export const Register = () => {
   const signupMutation = useSignup();
   const verifyOtpMutation = useVerifyOtp();
 
+  // ✅ SAME handler, just extended professionally
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name === "otp") setOtp(value);
-    else setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "otp") {
+      setOtp(value);
+      return;
+    }
+
+    let updatedValue = value;
+
+    if (name === "username") {
+      updatedValue = value.toLowerCase().trim();
+    }
+
+    if (name === "phoneNumber") {
+      updatedValue = value.trim();
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: updatedValue }));
 
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
+  // ❌ EXISTING validation UNCHANGED
   const validateSignupForm = () => {
     const newErrors: { email?: string; password?: string } = {};
-    if (!formData.email) {newErrors.email = "Email is required";}
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    }
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (
@@ -102,7 +133,6 @@ export const Register = () => {
 
   return (
     <>
-      {/* ================= REGISTER PAGE ================= */}
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-green-50 to-white px-4">
         <Card className="w-full max-w-md shadow-xl border border-muted/40">
           <CardHeader className="space-y-2 text-center">
@@ -116,6 +146,42 @@ export const Register = () => {
 
           <form onSubmit={handleRegister}>
             <CardContent className="space-y-4">
+              {/* Username */}
+              <div className="space-y-1.5">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  name="username"
+                  placeholder="yourusername"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* University Name */}
+              <div className="space-y-1.5">
+                <Label htmlFor="universityName">University Name</Label>
+                <Input
+                  id="universityName"
+                  name="universityName"
+                  placeholder="Your university"
+                  value={formData.universityName}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* Phone Number */}
+              <div className="space-y-1.5">
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="03XXXXXXXXX"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
+
               {/* Email */}
               <div className="space-y-1.5">
                 <Label htmlFor="email">Email address</Label>
@@ -135,14 +201,23 @@ export const Register = () => {
               {/* Password */}
               <div className="space-y-1.5">
                 <Label htmlFor="password">Password</Label>
-                <Input
+               <div className="relative">
+                 <Input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showNew ? "text" : "password"}
                   placeholder="Strong password"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNew(!showNew)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
+                >
+                  {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+               </div>
                 {errors.password && (
                   <p className="text-xs text-red-600">{errors.password}</p>
                 )}
@@ -175,8 +250,6 @@ export const Register = () => {
           </form>
         </Card>
       </div>
-
-      {/* ================= OTP DIALOG ================= */}
       <Dialog open={showOtpModal} onOpenChange={setShowOtpModal}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
