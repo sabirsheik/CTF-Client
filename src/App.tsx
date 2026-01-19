@@ -5,25 +5,25 @@ import { Suspense, lazy } from "react";
 //  AUTH PAGES (LAZY LOADED)
 // ==============================
 const Login = lazy(() =>
-  import("./Ui/Pages/Auth/Login/Login").then((m) => ({ default: m.Login }))
+  import("./Ui/Pages/Auth/Login/Login").then((m) => ({ default: m.Login })),
 );
 
 const Register = lazy(() =>
   import("./Ui/Pages/Auth/Register/Register").then((m) => ({
     default: m.Register,
-  }))
+  })),
 );
 
 const ForgetPasswordModal = lazy(() =>
   import("./Ui/Pages/Auth/ForgetPasswordModal/ForgetPasswordModal").then(
-    (m) => ({ default: m.ForgetPasswordModal })
-  )
+    (m) => ({ default: m.ForgetPasswordModal }),
+  ),
 );
 
 const ResetPassword = lazy(() =>
   import("./Ui/Pages/Auth/ResetPassword/ResetPassword").then((m) => ({
     default: m.ResetPassword,
-  }))
+  })),
 );
 
 // ==============================
@@ -32,40 +32,35 @@ const ResetPassword = lazy(() =>
 const Analyst = lazy(() =>
   import("./Dashboards/User/User").then((m) => ({
     default: m.Analyst,
-  }))
+  })),
 );
 
 const AdminDashboard = lazy(() =>
   import("./Dashboards/Admin/AdminDashboard").then((m) => ({
     default: m.AdminDashboard,
-  }))
+  })),
 );
 
 // ==============================
 //  CTF PAGES (LAZY LOADED)
 // ==============================
-const CTF = lazy(() =>
-  import("./Ui/Pages/CTF/CTF").then((m) => ({
-    default: m.default,
-  }))
-);
-
+import { CTF } from "./Ui/Pages/CTF/CTF";
 const Teams = lazy(() =>
   import("./Ui/Pages/Teams/Teams").then((m) => ({
     default: m.Teams,
-  }))
+  })),
 );
 
 const FilteringRound = lazy(() =>
   import("./Ui/Pages/FilteringRound/FilteringRound").then((m) => ({
     default: m.default,
-  }))
+  })),
 );
 
 const Challenge = lazy(() =>
   import("./Ui/Pages/Challenge/Challenge").then((m) => ({
     default: m.Challenge,
-  }))
+  })),
 );
 
 // ==============================

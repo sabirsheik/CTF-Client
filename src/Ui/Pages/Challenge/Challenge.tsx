@@ -1,7 +1,8 @@
+
 export const Challenge = () => {
   return (
-    <>
-      Challenge Page
-    </>
+    <div>
+      Challenge
+    </div>
   )
-};
+}
