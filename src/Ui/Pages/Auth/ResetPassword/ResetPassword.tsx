@@ -114,7 +114,7 @@ export const ResetPassword = () => {
             opacity: [0.3, 0.5, 0.3]
           }}
           transition={{ duration: 8, repeat: Infinity }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-500/30 to-blue-500/30 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-green-500/30 to-blue-500/30 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -122,7 +122,7 @@ export const ResetPassword = () => {
             opacity: [0.3, 0.5, 0.3]
           }}
           transition={{ duration: 8, repeat: Infinity, delay: 1 }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-green-500/30 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-br from-blue-500/30 to-green-500/30 rounded-full blur-3xl"
         />
       </div>
 
@@ -132,7 +132,7 @@ export const ResetPassword = () => {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md p-10 bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl relative z-10 border-2 border-green-500/30 overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent" />
         <div className="relative z-10">
           <motion.div
             animate={{ rotate: [0, 360] }}

@@ -105,8 +105,8 @@ export const CTF = () => {
               whileHover={{ scale: 1.03, rotateY: 2 }}
             >
               <Card className="p-6 bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 rounded-xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-green-400 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-4">

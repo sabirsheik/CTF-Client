@@ -120,7 +120,7 @@ export const Login = () => {
         className="w-full max-w-md"
       >
         <Card className="shadow-2xl bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 relative z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent" />
           <CardHeader className="space-y-3 text-center relative z-10">
             <motion.div
               animate={{ rotate: [0, 360] }}

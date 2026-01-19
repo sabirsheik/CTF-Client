@@ -130,8 +130,8 @@ export const Challenge = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Card className="relative border-2 border-green-500/30 bg-slate-900/90 backdrop-blur-xl overflow-hidden group cursor-pointer">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-linear-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-green-400 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 
                 <CardHeader className="relative z-10">
                   <div className="flex items-center justify-between mb-2">
@@ -159,7 +159,7 @@ export const Challenge = () => {
                 
                 <CardContent className="relative z-10">
                   <div className="flex items-start gap-2 mb-4">
-                    <Terminal className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                    <Terminal className="w-4 h-4 text-green-400 mt-1 shrink-0" />
                     <p className="text-sm text-gray-300 leading-relaxed">{challenge.description}</p>
                   </div>
                   <div className="flex items-center justify-between pt-4 border-t border-green-500/20">
