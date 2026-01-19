@@ -15,6 +15,26 @@ createRoot(document.getElementById("root")!).render(
         <App />
       </BrowserRouter>
     </QueryClientProvider>
-    <Toaster position="top-right" />
+    <Toaster 
+      position="top-right" 
+      toastOptions={{
+        style: {
+          background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)',
+          backdropFilter: 'blur(16px)',
+          border: '2px solid rgba(147, 51, 234, 0.5)',
+          color: 'rgb(255, 255, 255)',
+          fontFamily: '"Inter", system-ui, sans-serif',
+          fontWeight: '600',
+          padding: '16px 20px',
+          borderRadius: '12px',
+        },
+        className: 'backdrop-blur-xl',
+        duration: 4000,
+        classNames: {
+          success: 'toast-success',
+          error: 'toast-error',
+        },
+      }}
+    />
   </StrictMode>
 );

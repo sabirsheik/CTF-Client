@@ -217,3 +217,18 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Toast Styles */
+.toast-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(34, 197, 94, 0.15) 100%) !important;
+  border: 2px solid rgb(16, 185, 129) !important;
+  /* box-shadow: 0 8px 32px rgba(16, 185, 129, 0.5), 0 0 60px rgba(34, 197, 94, 0.3) !important; */
+  color: rgb(240, 253, 244) !important;
+}
+
+.toast-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%) !important;
+  border: 2px solid rgb(239, 68, 68) !important;
+  /* box-shadow: 0 8px 32px rgba(239, 68, 68, 0.5), 0 0 60px rgba(220, 38, 38, 0.3) !important; */
+  color: rgb(254, 242, 242) !important;
+}

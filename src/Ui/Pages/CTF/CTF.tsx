@@ -5,6 +5,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Card } from "../../../components/ui/card";
 import { Terminal, Zap, CheckCircle, Send } from "lucide-react";
+import { toast } from "sonner";
 
 interface Challenge {
   id: string;
@@ -49,6 +50,7 @@ export const CTF = () => {
         body: { machineId, flag: flags[machineId] },
       });
       setMessage({ ...message, [machineId]: data.message });
+      toast.success(data.message || "Flag submitted successfully");
       // Refresh challenges to show updated solver info
       setTimeout(() => {
         fetchChallenges();
@@ -56,6 +58,7 @@ export const CTF = () => {
       }, 1500);
     } catch (error: any) {
       setMessage({ ...message, [machineId]: error.message || "Submission failed" });
+      toast.error(error.message || "Submission failed");
     }
     setLoading({ ...loading, [machineId]: false });
   };
