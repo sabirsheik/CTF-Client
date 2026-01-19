@@ -51,11 +51,11 @@ const Teams = lazy(() =>
   })),
 );
 
-const FilteringRound = lazy(() =>
-  import("./Ui/Pages/FilteringRound/FilteringRound").then((m) => ({
-    default: m.default,
-  })),
-);
+// const FilteringRound = lazy(() =>
+//   import("./Ui/Pages/FilteringRound/FilteringRound").then((m) => ({
+//     default: m.default,
+//   })),
+// );
 
 const Challenge = lazy(() =>
   import("./Ui/Pages/Challenge/Challenge").then((m) => ({
