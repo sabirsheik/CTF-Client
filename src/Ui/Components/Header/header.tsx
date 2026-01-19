@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useUser, useLogout } from "../../../Hook/Auth/useAuth";
 
 export const Header: React.FC = () => {
@@ -29,64 +30,103 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-baseColor/90 backdrop-blur-md border-b border-green-500/20 text-green-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <motion.header 
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b-2 border-green-500/30 text-green-400 shadow-lg shadow-green-500/10"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
 
         {/* LEFT: Logo */}
-        <div className="flex items-center gap-3">
-          <ShieldCheck className="w-6 h-6 text-green-500" />
-          <h1 className="text-base sm:text-lg font-mono font-bold tracking-widest">
-            CTF :: SYSTEM
+        <motion.div 
+          className="flex items-center gap-3"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <motion.div
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+              scale: { duration: 2, repeat: Infinity }
+            }}
+          >
+            <ShieldCheck className="w-7 h-7 text-green-400 drop-shadow-[0_0_8px_rgba(0,255,65,0.8)]" />
+          </motion.div>
+          <h1 className="text-base sm:text-lg font-mono font-bold tracking-widest glow-text">
+            [ CTF_SYSTEM ]
           </h1>
-        </div>
+        </motion.div>
 
         {/* CENTER: User Info (Desktop only) */}
         {isLoggedIn && user && (
-          <div className="hidden lg:flex items-center gap-4 font-mono text-sm">
-            <span className="flex items-center gap-2 px-3 py-1 rounded bg-green-500/5 border border-green-500/20">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="hidden lg:flex items-center gap-4 font-mono text-sm"
+          >
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30 backdrop-blur-sm"
+            >
               <User className="w-4 h-4" />
               {user.email}
-            </span>
-            <span className="px-3 py-1 rounded bg-green-500/10 border border-green-500/30">
-              ROLE: {user.role.toUpperCase()}
-            </span>
-          </div>
+            </motion.span>
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-2 rounded-lg bg-green-500/20 border border-green-500/40 font-bold"
+            >
+              [{user.role.toUpperCase()}]
+            </motion.span>
+          </motion.div>
         )}
 
 
         {/* RIGHT: Actions + Mobile Menu Button */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {isLoggedIn ? (
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={LogoutUser}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 font-mono text-sm
-                         border border-red-500/40 text-red-400
-                         hover:bg-red-500/10 transition cursor-pointer"
+              className="hidden sm:flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+                         border-2 border-red-500/50 text-red-400 bg-red-500/10
+                         hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              LOGOUT
-            </button>
+              [LOGOUT]
+            </motion.button>
           ) : (
-            <NavLink
-              to="/login"
-              className="hidden sm:flex items-center gap-2 px-4 py-2 font-mono text-sm
-                         border border-green-500/40 text-green-400
-                         hover:bg-green-500/10 transition cursor-pointer"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <LogIn className="w-4 h-4" />
-              LOGIN
-            </NavLink>
+              <NavLink
+                to="/login"
+                className="hidden sm:flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+                           border-2 border-green-500/50 text-green-400 bg-green-500/10
+                           hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"
+              >
+                <LogIn className="w-4 h-4" />
+                [LOGIN]
+              </NavLink>
+            </motion.div>
           )}
 
           {/* MOBILE MENU BUTTON */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 border border-green-500/30 rounded cursor-pointer"
+            className="md:hidden p-2 border-2 border-green-500/40 rounded-lg bg-green-500/10 cursor-pointer"
           >
             {menuOpen ? <X /> : <Menu />}
-          </button>
+          </motion.button>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };

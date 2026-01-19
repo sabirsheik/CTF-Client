@@ -1,5 +1,16 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import type { TargetAndTransition } from "framer-motion";
+
+// Typed motion targets to satisfy TypeScript
+const loginCardInitial: TargetAndTransition = { opacity: 0, y: 50 };
+const loginCardAnimate: TargetAndTransition = { opacity: 1, y: 0 };
+const formFieldInitial: TargetAndTransition = { x: -20, opacity: 0 };
+const formFieldAnimate: TargetAndTransition = { x: 0, opacity: 1 };
+const errorInitial: TargetAndTransition = { opacity: 0 };
+const errorAnimate: TargetAndTransition = { opacity: 1 };
+
 // Hooks to handle user authentication
 import { useUser, useLogin } from "../../../../Hook/Auth/useAuth";
 import { toast } from "sonner";
@@ -80,100 +91,165 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-green-50 to-white px-4 relative overflow-hidden">
-      {/* Decorative background blobs */}
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-linear-to-br from-purple-200 to-blue-200 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-linear-to-br from-blue-200 to-purple-200 rounded-full opacity-20 blur-3xl"></div>
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-500/30 to-blue-500/30 rounded-full blur-3xl"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity, delay: 1 }}
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-green-500/30 rounded-full blur-3xl"
+        />
       </div>
 
       {/* Login Card */}
-      <Card className="w-full max-w-md shadow-2xl bg-white/80 backdrop-blur-xl border border-muted/40 relative z-10">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-2xl font-semibold text-baseColor">
-            Welcome Back
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Login using your registered email & password
-          </CardDescription>
-        </CardHeader>
+      <motion.div
+        initial={loginCardInitial}
+        animate={loginCardAnimate}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md"
+      >
+        <Card className="shadow-2xl bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 relative z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+          <CardHeader className="space-y-3 text-center relative z-10">
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="mx-auto w-16 h-16 border-2 border-green-400 rounded-full flex items-center justify-center mb-2"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-8 h-8 bg-green-400/20 rounded-full"
+              />
+            </motion.div>
+            <CardTitle className="text-3xl font-bold text-green-400 font-mono glow-text">
+              [ ACCESS LOGIN ]
+            </CardTitle>
+            <CardDescription className="text-sm text-green-300/70 font-mono">
+              &gt; Enter credentials to proceed_
+            </CardDescription>
+          </CardHeader>
 
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-5 relative z-10">
             {/* Email */}
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email address</Label>
+            <motion.div 
+              initial={formFieldInitial}
+              animate={formFieldAnimate}
+              transition={{ delay: 0.2 }}
+              className="space-y-2"
+            >
+              <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; Email address</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="name@domain.com"
+                placeholder="user@system.ctf"
                 value={formData.email}
                 onChange={handleInputChange}
+                className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
               />
               {errors.email && (
-                <p className="text-xs text-red-600">{errors.email}</p>
+                <motion.p 
+                  initial={errorInitial}
+                  animate={errorAnimate}
+                  className="text-xs text-red-400 font-mono"
+                >
+                  ! {errors.email}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
 
             {/* Password */}
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
+            <motion.div 
+              initial={formFieldInitial}
+              animate={formFieldAnimate}
+              transition={{ delay: 0.3 }}
+              className="space-y-2"
+            >
+              <Label htmlFor="password" className="text-green-400 font-mono text-sm">&gt; Password</Label>
              <div className="relative">
                <Input
                 id="password"
                 name="password"
                 type={showNew ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="••••••••"
                 value={formData.password}
                 onChange={handleInputChange}
+                className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono pr-12"
               />
-               <button
+               <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 type="button"
                 onClick={() => setShowNew(!showNew)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400 cursor-pointer"
               >
                 {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+              </motion.button>
              </div>
               {errors.password && (
-                <p className="text-xs text-red-600">{errors.password}</p>
+                <motion.p 
+                  initial={errorInitial}
+                  animate={errorAnimate}
+                  className="text-xs text-red-400 font-mono"
+                >
+                  ! {errors.password}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
           </CardContent>
 
-          <CardFooter className="flex flex-col gap-4 mt-4">
-            <Button
-              type="submit"
-              disabled={loginMutation.isPending}
-              className="w-full bg-baseColor hover:bg-hoverColor text-white cursor-pointer"
+          <CardFooter className="flex flex-col gap-5 mt-4 relative z-10">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full"
             >
-              {loginMutation.isPending ? "Logging in..." : "Login"}
-            </Button>
+              <Button
+                type="submit"
+                disabled={loginMutation.isPending}
+                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
+              >
+                {loginMutation.isPending ? "[ AUTHENTICATING... ]" : "[ INITIATE LOGIN ]"}
+              </Button>
+            </motion.div>
 
-            <Separator />
+            <Separator className="bg-green-500/20" />
 
-            <div className="text-center space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Don&apos;t have an account?
+            <div className="text-center space-y-3">
+              <p className="text-sm text-gray-400 font-mono">
+                &gt; New user?
                 <NavLink
                   to="/register"
-                  className="ml-1 text-baseColor hover:underline"
+                  className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors"
                 >
-                  Register
+                  [Register]
                 </NavLink>
               </p>
 
               <NavLink
                 to="/forget-password"
-                className="text-sm text-baseColor hover:underline"
+                className="text-sm text-green-400/70 hover:text-green-400 hover:underline transition-colors font-mono block"
               >
-                Forgot password?
+                &gt; Forgot credentials?
               </NavLink>
             </div>
           </CardFooter>
         </form>
       </Card>
+    </motion.div>
     </div>
   );
 };

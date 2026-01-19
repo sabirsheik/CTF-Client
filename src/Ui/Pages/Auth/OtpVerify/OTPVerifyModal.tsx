@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import type { TargetAndTransition } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
+import { Clock } from "lucide-react";
+
+// Typed motion targets
+const errorInitial: TargetAndTransition = { opacity: 0, y: -10 };
+const errorAnimate: TargetAndTransition = { opacity: 1, y: 0 };
 import {
   Dialog,
   DialogContent,
@@ -80,56 +87,82 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
   return (
     // OTP Verification Dialog
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-sm bg-white/90 backdrop-blur-xl shadow-2xl border border-muted/40">
-        <DialogHeader className="text-center space-y-2">
-          <DialogTitle className="text-xl font-semibold text-baseColor">
-            Verify OTP
+      <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+        <DialogHeader className="text-center space-y-3 relative z-10">
+          <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="mx-auto w-16 h-16 border-2 border-green-400 rounded-full flex items-center justify-center mb-2"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-8 h-8 bg-green-400/20 rounded-full"
+            />
+          </motion.div>
+          <DialogTitle className="text-2xl font-bold text-green-400 font-mono glow-text">
+            [ VERIFY OTP ]
           </DialogTitle>
-          <DialogDescription className="text-sm">
-            Enter the 6-digit code sent to your email
+          <DialogDescription className="text-sm text-green-300/70 font-mono">
+            &gt; Enter 6-digit verification code_
           </DialogDescription>
         </DialogHeader>
 
-        <Separator />
+        <Separator className="bg-green-500/20" />
 
         {/* Timer */}
-        <div className="text-center text-sm font-medium text-muted-foreground mt-2">
-          Time Remaining{" "}
-          <span className="text-baseColor">
+        <motion.div 
+          className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2 relative z-10"
+          animate={timeLeft <= 10 ? { scale: [1, 1.05, 1] } : {}}
+          transition={{ duration: 0.5, repeat: timeLeft <= 10 ? Infinity : 0 }}
+        >
+          <Clock className="w-4 h-4" />
+          <span className={timeLeft <= 10 ? "text-red-400" : "text-green-400"}>
             {minutes}:{seconds.toString().padStart(2, "0")}
           </span>
-        </div>
+        </motion.div>
 
         {/* OTP FORM */}
-        <form onSubmit={handleVerify} className="space-y-4 mt-4">
-          <Input
-            type="text"
-            placeholder="••••••"
-            maxLength={6}
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="text-center tracking-[0.35em] text-lg font-semibold"
-          />
-          {/* if VerifyingMutation is pending button disabled */}
-          <Button
-            disabled={verifyOtpMutation.isPending}
-            className="w-full bg-baseColor hover:bg-hoverColor text-white"
+        <form onSubmit={handleVerify} className="space-y-5 mt-4 relative z-10">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            {/* Button text changes based on mutation state */}
-            {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
-          </Button>
+            <Input
+              type="text"
+              placeholder="••••••"
+              maxLength={6}
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="text-center tracking-[0.35em] text-xl font-bold bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
+            />
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Button
+              disabled={verifyOtpMutation.isPending}
+              className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
+            >
+              {verifyOtpMutation.isPending ? "[ VERIFYING... ]" : "[ VERIFY OTP ]"}
+            </Button>
+          </motion.div>
         </form>
-        {/*  */}
-        <Separator />
+        <Separator className="bg-green-500/20" />
         {/* Footer Actions */}
-        <div className="text-center text-sm mt-2">
-          <button
+        <div className="text-center text-sm mt-3 relative z-10">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             type="button"
             onClick={onClose}
-            className="block mx-auto text-muted-foreground hover:text-foreground"
+            className="block mx-auto text-gray-400 hover:text-green-400 font-mono transition-colors"
           >
-            Cancel
-          </button>
+            &gt; Cancel
+          </motion.button>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+import type { TargetAndTransition } from "framer-motion";
 // Hook to handle forget password
 import { useForgetPassword } from "../../../../Hook/Auth/useAuth";
 import { toast } from "sonner";
 import { NavLink } from "react-router-dom";
+
+// Typed motion targets
+const modalInitial: TargetAndTransition = { opacity: 0, scale: 0.9 };
+const modalAnimate: TargetAndTransition = { opacity: 1, scale: 1 };
+const formFieldInitial: TargetAndTransition = { x: -20, opacity: 0 };
+const formFieldAnimate: TargetAndTransition = { x: 0, opacity: 1 };
 // UI Components
 import {
   Card,
@@ -65,76 +73,116 @@ export const ForgetPasswordModal = () => {
   /* ================= FORGET PASSWORD UI ================= */
   return (
     // Modal
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
-      <Card className="w-full max-w-md bg-white/90 backdrop-blur-xl shadow-2xl border border-muted/40 relative">
-        {/* Close Button */}
-        <NavLink
-          to="/login"
-          className="absolute right-4 top-3 text-xl font-semibold text-muted-foreground hover:text-foreground"
-        >
-          ×
-        </NavLink>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-md px-4">
+      <motion.div
+        initial={modalInitial}
+        animate={modalAnimate}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md"
+      >
+        <Card className="bg-slate-900/90 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+          {/* Close Button */}
+          <NavLink
+            to="/login"
+            className="absolute right-4 top-3 text-2xl font-semibold text-green-400 hover:text-green-300 z-20"
+          >
+            ×
+          </NavLink>
 
-        <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-xl font-semibold text-baseColor">
-            Forgot Password
-          </CardTitle>
-          <CardDescription className="text-sm">
-            Enter your registered email to receive an OTP
-          </CardDescription>
-        </CardHeader>
+          <CardHeader className="text-center space-y-3 relative z-10">
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="mx-auto w-16 h-16 border-2 border-green-400 rounded-full flex items-center justify-center mb-2"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-8 h-8 bg-green-400/20 rounded-full"
+              />
+            </motion.div>
+            <CardTitle className="text-2xl font-bold text-green-400 font-mono glow-text">
+              [ FORGOT PASSWORD ]
+            </CardTitle>
+            <CardDescription className="text-sm text-green-300/70 font-mono">
+              &gt; Enter email to receive OTP_
+            </CardDescription>
+          </CardHeader>
 
-        <Separator />
+          <Separator className="bg-green-500/20" />
 
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email Address</Label>
+          <CardContent className="space-y-5 relative z-10">
+            <motion.div
+              initial={formFieldInitial}
+              animate={formFieldAnimate}
+              transition={{ delay: 0.2 }}
+              className="space-y-2"
+            >
+              <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; Email Address</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="name@domain.com"
+                placeholder="user@system.ctf"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/70"
+                className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
               />
-              {error && <p className="text-xs text-red-600">{error}</p>}
-            </div>
+              {error && (
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-xs text-red-400 font-mono"
+                >
+                  ! {error}
+                </motion.p>
+              )}
+            </motion.div>
 
-            <div className="flex items-start gap-2 text-sm">
-              <Checkbox id="confirm" required />
+            <motion.div
+              initial={formFieldInitial}
+              animate={formFieldAnimate}
+              transition={{ delay: 0.3 }}
+              className="flex items-start gap-2 text-sm"
+            >
+              <Checkbox id="confirm" required className="border-green-500/50" />
               <Label
                 htmlFor="confirm"
-                className="text-muted-foreground leading-snug"
+                className="text-gray-400 leading-snug font-mono text-xs"
               >
-                I confirm this email belongs to my account
+                &gt; I confirm this email belongs to my account
               </Label>
-            </div>
+            </motion.div>
           </CardContent>
 
-          <CardFooter className="flex flex-col gap-4 mt-4">
-            {/* if forgetpasswordmutation is pending button disabled */}
-            <Button
-              disabled={forgetPasswordMutation.isPending}
-              className="w-full bg-baseColor hover:bg-hoverColor text-white"
+          <CardFooter className="flex flex-col gap-5 mt-4 relative z-10">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full"
             >
-              {/* Button text changes based on mutation state */}
-              {forgetPasswordMutation.isPending ? "Sending OTP..." : "Send OTP"}
-            </Button>
+              <Button
+                disabled={forgetPasswordMutation.isPending}
+                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
+              >
+                {forgetPasswordMutation.isPending ? "[ SENDING... ]" : "[ SEND OTP ]"}
+              </Button>
+            </motion.div>
 
-            <p className="text-sm text-muted-foreground text-center">
-              Remember your password?
-              {/* Link to login page */}
+            <p className="text-sm text-gray-400 text-center font-mono">
+              &gt; Remember password?
               <NavLink
                 to="/login"
-                className="ml-1 text-baseColor hover:underline"
+                className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors"
               >
-                Login
+                [Login]
               </NavLink>
             </p>
           </CardFooter>
         </form>
       </Card>
+    </motion.div>
     </div>
   );
 };
