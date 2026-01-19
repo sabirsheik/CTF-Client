@@ -97,7 +97,7 @@ export const Header: React.FC = () => {
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              [LOGOUT]
+              LOGOUT
             </motion.button>
           ) : (
             <motion.button
@@ -109,7 +109,7 @@ export const Header: React.FC = () => {
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              [LOGOUT]
+              LOGOUT
             </motion.button>
           )}
 

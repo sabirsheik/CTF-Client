@@ -117,7 +117,7 @@ export const App = () => {
               {/* ==============================
               FILTERING ROUND
              ============================== */}
-              <Route index element={<FilteringRound />} />
+              {/* <Route index element={<FilteringRound />} /> */}
               {/* Ctf Page */}
               <Route path="ctf" element={<CTF />} />
               {/* Teams Route */}
