@@ -14,7 +14,7 @@ export const Teams = () => {
         transition={{ duration: 0.6 }}
         className="bg-slate-900/90 backdrop-blur-xl p-10 rounded-2xl border-2 border-green-500/30 w-full max-w-lg text-center relative overflow-hidden group"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         <div className="relative z-10">
           <motion.div
@@ -31,7 +31,7 @@ export const Teams = () => {
             transition={{ delay: 0.2 }}
             className="text-4xl font-bold mb-6 text-green-400 font-mono glow-text"
           >
-            [ TEAMS PANEL ]
+            TEAMS PANEL 
           </motion.h1>
           
           <motion.p
@@ -40,7 +40,7 @@ export const Teams = () => {
             transition={{ delay: 0.3 }}
             className="text-green-300/70 font-mono text-sm mb-8"
           >
-            &gt; Select your mission path_
+             Select your mission path
           </motion.p>
           
           <div className="space-y-4">

@@ -136,7 +136,7 @@ export const CTF = () => {
                     whileHover={{ scale: 1.05 }}
                     className="text-green-400 hover:text-green-300 underline text-sm mb-4 block font-mono transition-colors"
                   >
-                    &gt; {challenge.link}
+                    {challenge.link}
                   </motion.a>
                   
                   {challenge.solver ? (
