@@ -92,7 +92,7 @@ export const Header: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={LogoutUser}
-              className="hidden sm:flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
                          border-2 border-red-500/50 text-red-400 bg-red-500/10
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
@@ -100,31 +100,20 @@ export const Header: React.FC = () => {
               [LOGOUT]
             </motion.button>
           ) : (
-            <motion.div
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={LogoutUser}
+              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+                         border-2 border-red-500/50 text-red-400 bg-red-500/10
+                         hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
-              <NavLink
-                to="/login"
-                className="hidden sm:flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
-                           border-2 border-green-500/50 text-green-400 bg-green-500/10
-                           hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"
-              >
-                <LogIn className="w-4 h-4" />
-                [LOGIN]
-              </NavLink>
-            </motion.div>
+              <LogOut className="w-4 h-4" />
+              [LOGOUT]
+            </motion.button>
           )}
 
-          {/* MOBILE MENU BUTTON */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 border-2 border-green-500/40 rounded-lg bg-green-500/10 cursor-pointer"
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </motion.button>
+    
         </div>
       </div>
     </motion.header>
