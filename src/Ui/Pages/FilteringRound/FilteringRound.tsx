@@ -32,8 +32,8 @@ const FilteringRound = () => {
       });
       if (data.success) {
         setMessage(data.message);
-        // Redirect to CTF page
-        setTimeout(() => navigate("/ctf"), 2000);
+        // Redirect to teams page
+        setTimeout(() => navigate("/dashboard/auth/user/teams"), 2000);
       } else {
         setMessage(data.message);
       }
@@ -80,7 +80,7 @@ const FilteringRound = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50"
+            className="w-full bg-baseColor text-white py-2 px-4 rounded-md hover:bg-hoverColor disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Submit Flag"}
           </button>

@@ -1,9 +1,8 @@
-import FilteringRound from "../FilteringRound/FilteringRound"
 
 const CTF = () => {
   return (
     <>
-      <FilteringRound />
+<h1>Ctf Page</h1>
     </>
   )
 }

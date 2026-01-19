@@ -62,6 +62,12 @@ const FilteringRound = lazy(() =>
   }))
 );
 
+const Challenge = lazy(() =>
+  import("./Ui/Pages/Challenge/Challenge").then((m) => ({
+    default: m.Challenge,
+  }))
+);
+
 // ==============================
 //  COMPONENTS & CONTEXT
 // ==============================
@@ -116,9 +122,13 @@ export const App = () => {
               {/* ==============================
               FILTERING ROUND
              ============================== */}
-              <Route path="filtering-round" element={<FilteringRound />} />
+              {/* <Route index element={<FilteringRound />} /> */}
+              {/* Ctf Page */}
+              <Route path="ctf" element={<CTF />} />
               {/* Teams Route */}
               <Route path="teams" element={<Teams />} />
+              {/* Challenge Route */}
+              <Route path="challenge" element={<Challenge />} />
             </Route>
           </Route>
 
@@ -127,13 +137,6 @@ export const App = () => {
              ============================== */}
           <Route element={<ProtectedRoute role="admin" />}>
             <Route path="/dashboard/auth/admin" element={<AdminDashboard />} />
-          </Route>
-
-          {/* ==============================
-              CTF PAGE (PROTECTED)
-             ============================== */}
-          <Route element={<ProtectedRoute role="user" />}>
-            <Route path="/ctf" element={<CTF />} />
           </Route>
 
           <Route
