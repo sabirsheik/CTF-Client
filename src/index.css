@@ -51,12 +51,14 @@
   --color-baseColor: var(--baseColor);
   --color-localColor: var(--localColor);
   --color-hoverColor: var(--hoverColor);
+  --color-content: var(--foregroundContent);
 }
 
 :root {
   --baseColor: #000000;
   --localColor: #000000;
   --hoverColor: #161616;
+  --foregroundContent: #79d99b;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

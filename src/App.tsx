@@ -15,9 +15,9 @@ const Register = lazy(() =>
 );
 
 const ForgetPasswordModal = lazy(() =>
-  import(
-    "./Ui/Pages/Auth/ForgetPasswordModal/ForgetPasswordModal"
-  ).then((m) => ({ default: m.ForgetPasswordModal }))
+  import("./Ui/Pages/Auth/ForgetPasswordModal/ForgetPasswordModal").then(
+    (m) => ({ default: m.ForgetPasswordModal })
+  )
 );
 
 const ResetPassword = lazy(() =>
@@ -30,7 +30,7 @@ const ResetPassword = lazy(() =>
 //  DASHBOARDS (LAZY LOADED)
 // ==============================
 const Analyst = lazy(() =>
-  import("./Dashboards/Analyst/Analyst").then((m) => ({
+  import("./Dashboards/User/User").then((m) => ({
     default: m.Analyst,
   }))
 );
@@ -38,6 +38,27 @@ const Analyst = lazy(() =>
 const AdminDashboard = lazy(() =>
   import("./Dashboards/Admin/AdminDashboard").then((m) => ({
     default: m.AdminDashboard,
+  }))
+);
+
+// ==============================
+//  CTF PAGES (LAZY LOADED)
+// ==============================
+const CTF = lazy(() =>
+  import("./Ui/Pages/CTF/CTF").then((m) => ({
+    default: m.default,
+  }))
+);
+
+const Teams = lazy(() =>
+  import("./Ui/Pages/Teams/Teams").then((m) => ({
+    default: m.Teams,
+  }))
+);
+
+const FilteringRound = lazy(() =>
+  import("./Ui/Pages/FilteringRound/FilteringRound").then((m) => ({
+    default: m.default,
   }))
 );
 
@@ -92,7 +113,12 @@ export const App = () => {
              ============================== */}
           <Route element={<ProtectedRoute role="user" />}>
             <Route path="/dashboard/auth/user" element={<Analyst />}>
-             
+              {/* ==============================
+              FILTERING ROUND
+             ============================== */}
+              <Route path="filtering-round" element={<FilteringRound />} />
+              {/* Teams Route */}
+              <Route path="teams" element={<Teams />} />
             </Route>
           </Route>
 
@@ -100,15 +126,16 @@ export const App = () => {
               ADMIN DASHBOARD (PROTECTED)
              ============================== */}
           <Route element={<ProtectedRoute role="admin" />}>
-            <Route
-              path="/dashboard/auth/admin"
-              element={<AdminDashboard />}
-            />
+            <Route path="/dashboard/auth/admin" element={<AdminDashboard />} />
           </Route>
 
           {/* ==============================
-              FALLBACK ROUTE
+              CTF PAGE (PROTECTED)
              ============================== */}
+          <Route element={<ProtectedRoute role="user" />}>
+            <Route path="/ctf" element={<CTF />} />
+          </Route>
+
           <Route
             path="*"
             element={
