@@ -45,8 +45,14 @@ const AdminDashboard = lazy(() =>
 //  CTF PAGES (LAZY LOADED)
 // ==============================
 import { CTF } from "./Ui/Pages/CTF/CTF";
-const Teams = lazy(() =>
+const TeamsPanel = lazy(() =>
   import("./Ui/Pages/Teams/Teams").then((m) => ({
+    default: m.Teams,
+  })),
+);
+
+const CTFTeams = lazy(() =>
+  import("./Ui/Pages/CTF/Teams/Teams").then((m) => ({
     default: m.Teams,
   })),
 );
@@ -121,10 +127,19 @@ export const App = () => {
               {/* Ctf Page */}
               <Route path="ctf" element={<CTF />} />
               {/* Teams Route */}
-              <Route path="teams" element={<Teams />} />
+              <Route path="teams" element={<TeamsPanel />} />
               {/* Challenge Route */}
               <Route path="challenge" element={<Challenge />} />
             </Route>
+          </Route>
+
+          {/* ==============================
+              TOP-LEVEL CTF ROUTES (PROTECTED)
+              Matches /ctf and /ctf/teams
+             ============================== */}
+          <Route element={<ProtectedRoute role="user" />}>
+            <Route path="/ctf" element={<CTF />} />
+            <Route path="/ctf/teams" element={<CTFTeams />} />
           </Route>
 
           {/* ==============================

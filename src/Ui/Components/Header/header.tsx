@@ -1,13 +1,18 @@
 import { ShieldCheck, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser, useLogout } from "../../../Hook/Auth/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Header: React.FC = () => {
   const { data: user, refetch: fetchUser } = useUser();
   const logoutMutation = useLogout();
   const isLoggedIn = !!user;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isOnCTFPage =
+    location.pathname === "/ctf" ||
+    location.pathname === "/dashboard/auth/user/ctf";
 
   const LogoutUser = async () => {
     try {
@@ -75,6 +80,16 @@ export const Header: React.FC = () => {
 
         {/* RIGHT: Actions + Mobile Menu Button */}
         <div className="flex items-center gap-3">
+          {isLoggedIn && isOnCTFPage && (
+            <button
+              onClick={() => navigate("/ctf/teams")}
+              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+                         border-2 border-green-500/50 text-green-400 bg-green-500/10
+                         hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"
+            >
+              TEAMS
+            </button>
+          )}
           {isLoggedIn ? (
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -97,7 +112,7 @@ export const Header: React.FC = () => {
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              LOGOUT
+              LOGIN
             </motion.button>
           )}
         </div>

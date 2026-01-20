@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff } from "lucide-react";
+import { Submit } from "../Form/Submit";
 // Login Component
 export const Login = () => {
   // State variables
@@ -91,6 +92,7 @@ export const Login = () => {
   };
 
   return (
+    <>   
     <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
@@ -134,7 +136,7 @@ export const Login = () => {
               />
             </motion.div>
             <CardTitle className="text-xl font-bold text-green-400 font-mono glow-text">
-               Register for Cyber CTF And Challenges 
+               Login to Cyber CTF And Challenges 
             </CardTitle>
             <CardDescription className="text-sm text-green-300/70 font-mono">
                Enter credentials to proceed
@@ -222,7 +224,7 @@ export const Login = () => {
                 disabled={loginMutation.isPending}
                 className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
               >
-                {loginMutation.isPending ? "[ AUTHENTICATING... ]" : "[ INITIATE LOGIN ]"}
+                {loginMutation.isPending ? " LOGIN... " : " LOGIN"}
               </Button>
             </motion.div>
 
@@ -250,6 +252,8 @@ export const Login = () => {
         </form>
       </Card>
     </motion.div>
+    <Submit />
     </div>
+    </>
   );
 };

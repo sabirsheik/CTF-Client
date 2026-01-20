@@ -30,12 +30,12 @@ import { Eye, EyeOff } from "lucide-react";
 export const Register = () => {
   const navigate = useNavigate();
 
-  // ✅ ADDED fields ONLY
+  //  ADDED fields ONLY
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    universityName: "",
-    phoneNumber: "",
+    // universityName: "",
+    // phoneNumber: "",
     password: "",
   });
 
@@ -45,8 +45,8 @@ export const Register = () => {
   const [errors, setErrors] = useState<{
     username?: string;
     email?: string;
-    universityName?: string;
-    phoneNumber?: string;
+    // universityName?: string;
+    // phoneNumber?: string;
     password?: string;
     otp?: string;
   }>({});
@@ -69,9 +69,9 @@ export const Register = () => {
       updatedValue = value.toLowerCase().trim();
     }
 
-    if (name === "phoneNumber") {
-      updatedValue = value.trim();
-    }
+    // if (name === "phoneNumber") {
+    //   updatedValue = value.trim();
+    // }
 
     setFormData((prev) => ({ ...prev, [name]: updatedValue }));
 
@@ -175,8 +175,8 @@ export const Register = () => {
                   className="w-8 h-8 bg-green-400/20 rounded-full"
                 />
               </motion.div>
-              <CardTitle className="text-3xl font-bold text-green-400 font-mono glow-text">
-                CREATE ACCOUNT 
+              <CardTitle className="text-xl font-bold text-green-400 font-mono glow-text">
+                Register for Cyber CTF And Challenges 
               </CardTitle>
               <CardDescription className="text-sm text-green-300/70 font-mono">
                 Register new user credentials_
@@ -204,7 +204,7 @@ export const Register = () => {
               </motion.div>
 
               {/* University Name */}
-              <motion.div 
+              {/* <motion.div 
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.25 }}
@@ -219,9 +219,9 @@ export const Register = () => {
                   onChange={handleInputChange}
                   className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
                 />
-              </motion.div>
+              </motion.div> */}
 
-              {/* Phone Number */}
+              {/* Phone Number
               <motion.div 
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -237,7 +237,7 @@ export const Register = () => {
                   onChange={handleInputChange}
                   className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
                 />
-              </motion.div>
+              </motion.div> */}
 
               {/* Email */}
               <motion.div 
