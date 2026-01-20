@@ -4,15 +4,16 @@ import apiFetch from "../../../Hook/api/fetchApi";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Card } from "../../../components/ui/card";
-import { Terminal, Zap, CheckCircle, Send } from "lucide-react";
+import { Terminal, Zap, CheckCircle, Send, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface Challenge {
   id: string;
   name: string;
   description: string;
   link: string;
-  solver: {
+  firstSolver: {
     username: string;
     solvedAt: Date;
   } | null;
@@ -23,6 +24,7 @@ export const CTF = () => {
   const [flags, setFlags] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [message, setMessage] = useState<{ [key: string]: string }>({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchChallenges();
@@ -49,16 +51,34 @@ export const CTF = () => {
         method: "POST",
         body: { machineId, flag: flags[machineId] },
       });
+      
       setMessage({ ...message, [machineId]: data.message });
-      toast.success(data.message || "Flag submitted successfully");
-      // Refresh challenges to show updated solver info
-      setTimeout(() => {
-        fetchChallenges();
-        setFlags({ ...flags, [machineId]: "" });
-      }, 1500);
+      if (data.success) {
+        toast.success(data.message || "Flag submitted successfully");
+        // Refresh challenges to show updated solver info
+        setTimeout(() => {
+          fetchChallenges();
+          setFlags({ ...flags, [machineId]: "" });
+        }, 1500);
+        // Auto-clear success messages after 3 seconds
+        setTimeout(() => {
+          setMessage(prev => ({ ...prev, [machineId]: "" }));
+        }, 3000);
+      } else {
+        toast.error(data.message || "Incorrect flag");
+        // Auto-clear error messages after 5 seconds
+        setTimeout(() => {
+          setMessage(prev => ({ ...prev, [machineId]: "" }));
+        }, 5000);
+      }
     } catch (error: any) {
-      setMessage({ ...message, [machineId]: error.message || "Submission failed" });
-      toast.error(error.message || "Submission failed");
+      const errorMsg = error.message || "Submission failed";
+      setMessage({ ...message, [machineId]: errorMsg });
+      toast.error(errorMsg);
+      // Auto-clear error messages after 5 seconds
+      setTimeout(() => {
+        setMessage(prev => ({ ...prev, [machineId]: "" }));
+      }, 5000);
     }
     setLoading({ ...loading, [machineId]: false });
   };
@@ -66,6 +86,19 @@ export const CTF = () => {
   return (
     <div className="min-h-screen p-8 relative z-10">
       <div className="max-w-7xl mx-auto">
+          {/* Back Button */}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          onClick={() => navigate(`/dashboard/auth/user/teams`)}
+          className="flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-400 text-green-400 rounded font-mono text-sm hover:bg-green-500/30 transition-colors mb-10 lg:mb-0 cursor-pointer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          BACK
+        </motion.button>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,7 +116,7 @@ export const CTF = () => {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            [ CTF MACHINES ]
+            CTF MACHINES 
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -91,7 +124,7 @@ export const CTF = () => {
             transition={{ delay: 0.3 }}
             className="text-green-300/70 font-mono text-sm"
           >
-            &gt; CAPTURE THE FLAG //
+            CAPTURE THE FLAG 
           </motion.p>
         </motion.div>
 
@@ -116,7 +149,7 @@ export const CTF = () => {
                     >
                       <Terminal className="w-6 h-6 text-green-400" />
                     </motion.div>
-                    {challenge.solver && (
+                    {challenge.firstSolver && (
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
@@ -139,66 +172,65 @@ export const CTF = () => {
                     {challenge.link}
                   </motion.a>
                   
-                  {challenge.solver ? (
+                  <div className="space-y-3">
+                    <Input
+                      type="text"
+                      placeholder="Enter flag..."
+                      value={flags[challenge.id] || ""}
+                      onChange={(e) => handleFlagChange(challenge.id, e.target.value)}
+                      className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
+                    />
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Button
+                        onClick={() => handleSubmit(challenge.id)}
+                        disabled={loading[challenge.id] || !flags[challenge.id]}
+                        className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all flex items-center justify-center gap-2"
+                      >
+                        {loading[challenge.id] ? (
+                          <>
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            >
+                              <Zap className="w-4 h-4" />
+                            </motion.div>
+                            SUBMITTING...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" />
+                            SUBMIT FLAG
+                          </>
+                        )}
+                      </Button>
+                    </motion.div>
+                    {message[challenge.id] && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`text-sm font-mono font-bold ${
+                          message[challenge.id].includes("Congratulations") || message[challenge.id].includes("correct") ? "text-green-400" : "text-red-400"
+                        }`}
+                      >
+                        {message[challenge.id].includes("Congratulations") || message[challenge.id].includes("correct") ? "✓ " : "✗ "}
+                        {message[challenge.id]}
+                      </motion.p>
+                    )}
+                  </div>
+                  
+                  {challenge.firstSolver && (
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="p-4 bg-green-500/20 border-2 border-green-400 rounded-lg"
+                      className="mt-4 p-3 bg-green-500/10 border border-green-400/50 rounded-lg"
                     >
-                      <p className="text-green-400 font-bold text-sm font-mono flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4" />
-                        SOLVED BY: {challenge.solver.username}
+                      <p className="text-green-400 font-bold text-sm font-mono">
+                         First Blood : {challenge.firstSolver.username}
                       </p>
                     </motion.div>
-                  ) : (
-                    <div className="space-y-3">
-                      <Input
-                        type="text"
-                        placeholder="Enter flag..."
-                        value={flags[challenge.id] || ""}
-                        onChange={(e) => handleFlagChange(challenge.id, e.target.value)}
-                        className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
-                      />
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Button
-                          onClick={() => handleSubmit(challenge.id)}
-                          disabled={loading[challenge.id] || !flags[challenge.id]}
-                          className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all flex items-center justify-center gap-2"
-                        >
-                          {loading[challenge.id] ? (
-                            <>
-                              <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                              >
-                                <Zap className="w-4 h-4" />
-                              </motion.div>
-                              SUBMITTING...
-                            </>
-                          ) : (
-                            <>
-                              <Send className="w-4 h-4" />
-                              SUBMIT FLAG
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
-                      {message[challenge.id] && (
-                        <motion.p 
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`text-sm font-mono font-bold ${
-                            message[challenge.id].includes("Congratulations") ? "text-green-400" : "text-red-400"
-                          }`}
-                        >
-                          {message[challenge.id].includes("Congratulations") ? "✓ " : "✗ "}
-                          {message[challenge.id]}
-                        </motion.p>
-                      )}
-                    </div>
                   )}
                 </div>
               </Card>

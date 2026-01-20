@@ -2,10 +2,12 @@
 @import "tw-animate-css";
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
 * {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
+  font-family: 'Courier New', 'Fira Code', monospace;
   font-weight: 500;
   font-style: normal;
+   /* font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500; */
 }
 @custom-variant dark (&:is(.dark *));
 
