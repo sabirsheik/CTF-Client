@@ -121,7 +121,7 @@ export const Challenge = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-green-300/70 font-mono text-sm tracking-wider"
+            className="text-green-300/70 font-mono text-2xl tracking-wider"
           >
              SELECT YOUR MISSION
           </motion.p>
@@ -129,7 +129,7 @@ export const Challenge = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-green-300/70 font-mono text-[16px] font-bold"
+            className="text-green-400/70 font-mono text-xl font-bold"
           >
             This is an open challenge, and everyone is welcome to participate The challenge will take place on 27th January.
           </motion.p>
@@ -158,30 +158,30 @@ export const Challenge = () => {
                 
                 <CardHeader className="relative z-10">
                   <div className="flex items-center justify-between mb-2">
-                    <motion.div
+                    {/* <motion.div
                       animate={{ rotate: [0, 360] }}
                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     >
+                    </motion.div> */}
                       <challenge.icon className="w-8 h-8 text-green-400" />
-                    </motion.div>
                     <div className="flex items-center gap-2">
                       <Database className="w-4 h-4 text-green-400" />
                       {/* <span className="text-green-400 font-mono font-bold text-lg">{challenge.points}</span> */}
                       <span className="text-gray-500 text-sm">pts</span>
                     </div>
                   </div>
-                  <CardTitle className="text-xl text-green-400 font-mono group-hover:text-green-300 transition-colors">
+                  <CardTitle className="text-2xl text-green-400 font-mono group-hover:text-green-300 transition-colors">
                     {challenge.title}
                   </CardTitle>
                   <CardDescription className="text-gray-400 font-mono text-xs">
-                    &gt; MISSION_ID: {String(challenge.id).padStart(3, '0')}
+                     MISSION_ID: {String(challenge.id).padStart(3, '0')}
                   </CardDescription>
                 </CardHeader>
                 
                 <CardContent className="relative z-10">
                   <div className="flex items-start gap-2 mb-4">
                     <Terminal className="w-4 h-4 text-green-400 mt-1 shrink-0" />
-                    <p className="text-sm text-gray-300 leading-relaxed">{challenge.description}</p>
+                    <p className="text-[16px] text-gray-300 leading-relaxed">{challenge.description}</p>
                   </div>
                   <div className="flex items-center justify-center pt-4 border-t border-green-500/20">
                     <motion.div

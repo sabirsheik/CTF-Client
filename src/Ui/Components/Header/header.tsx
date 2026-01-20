@@ -1,11 +1,13 @@
 import { ShieldCheck, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser, useLogout } from "../../../Hook/Auth/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export const Header: React.FC = () => {
   const { data: user, refetch: fetchUser } = useUser();
   const logoutMutation = useLogout();
   const isLoggedIn = !!user;
+  const navigate = useNavigate();
 
   const LogoutUser = async () => {
     try {
@@ -22,7 +24,7 @@ export const Header: React.FC = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b-2 border-green-500/30 text-green-400 shadow-lg shadow-green-500/10"
+      className="sticky top-0 z-50 backdrop-blur-xl border-b-2 border-green-500/30 text-green-400 shadow-lg shadow-green-500/10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* LEFT: Logo */}
@@ -43,7 +45,7 @@ export const Header: React.FC = () => {
           >
             <ShieldCheck className="w-7 h-7 text-green-400 drop-shadow-[0_0_8px_rgba(0,255,65,0.8)]" />
           </motion.div>
-          <h1 className="text-base sm:text-lg font-mono font-bold tracking-widest glow-text">
+          <h1 className="text-base sm:text-lg font-mono font-bold tracking-widest glow-text cursor-pointer"   onClick={() => navigate(`/dashboard/auth/user/teams`)}>
            CTF SYSTEM
           </h1>
         </motion.div>

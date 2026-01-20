@@ -100,7 +100,18 @@ export const CTF = () => {
       <div className="max-w-7xl mx-auto">
           {/* Back Button */}
        <div className="container">
-        
+         <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          onClick={() => navigate(`/dashboard/auth/user/teams`)}
+          className="flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-400 text-green-400 rounded font-mono text-sm hover:bg-green-500/30 transition-colors mb-10 lg:mb-0 cursor-pointer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          BACK
+        </motion.button>
        </div>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -162,9 +173,8 @@ export const CTF = () => {
                       </motion.div>
                     )}
                   </div>
-
                   <h2 className="text-2xl font-bold text-green-400 mb-3 font-mono">{challenge.name}</h2>
-                  <p className="text-gray-300 mb-4 text-sm leading-relaxed font-mono">{challenge.description}</p>
+                  <p className="text-gray-300 mb-4 text-[15px] leading-relaxed font-mono">{challenge.description}</p>
                   <motion.a
                     href={challenge.link}
                     target="_blank"
