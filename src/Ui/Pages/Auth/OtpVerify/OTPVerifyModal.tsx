@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { TargetAndTransition } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,9 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { Clock } from "lucide-react";
 
-// Typed motion targets
-const errorInitial: TargetAndTransition = { opacity: 0, y: -10 };
-const errorAnimate: TargetAndTransition = { opacity: 1, y: 0 };
 import {
   Dialog,
   DialogContent,

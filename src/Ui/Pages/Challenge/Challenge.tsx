@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Shield, Terminal, Lock, Bug, Smartphone, Key, Zap, Code, Database, ArrowLeft } from "lucide-react";
+import {  Terminal, Lock, Bug, Smartphone, Key, Zap, Database, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Challenge {
