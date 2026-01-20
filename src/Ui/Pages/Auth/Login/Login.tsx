@@ -133,11 +133,11 @@ export const Login = () => {
                 className="w-8 h-8 bg-green-400/20 rounded-full"
               />
             </motion.div>
-            <CardTitle className="text-3xl font-bold text-green-400 font-mono glow-text">
-              [ ACCESS LOGIN ]
+            <CardTitle className="text-xl font-bold text-green-400 font-mono glow-text">
+               Register for Cyber CTF And Challenges 
             </CardTitle>
             <CardDescription className="text-sm text-green-300/70 font-mono">
-              &gt; Enter credentials to proceed_
+               Enter credentials to proceed
             </CardDescription>
           </CardHeader>
 
@@ -150,7 +150,7 @@ export const Login = () => {
               transition={{ delay: 0.2 }}
               className="space-y-2"
             >
-              <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; Email address</Label>
+              <Label htmlFor="email" className="text-green-400 font-mono text-sm"> Email address</Label>
               <Input
                 id="email"
                 name="email"
@@ -178,7 +178,7 @@ export const Login = () => {
               transition={{ delay: 0.3 }}
               className="space-y-2"
             >
-              <Label htmlFor="password" className="text-green-400 font-mono text-sm">&gt; Password</Label>
+              <Label htmlFor="password" className="text-green-400 font-mono text-sm">Password</Label>
              <div className="relative">
                <Input
                 id="password"
@@ -230,12 +230,12 @@ export const Login = () => {
 
             <div className="text-center space-y-3">
               <p className="text-sm text-gray-400 font-mono">
-                &gt; New user?
+                New user ?
                 <NavLink
                   to="/register"
-                  className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors"
+                  className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors underline-offset-2"
                 >
-                  [Register]
+                  Register Here
                 </NavLink>
               </p>
 
@@ -243,7 +243,7 @@ export const Login = () => {
                 to="/forget-password"
                 className="text-sm text-green-400/70 hover:text-green-400 hover:underline transition-colors font-mono block"
               >
-                &gt; Forgot credentials?
+               Forgot credentials?
               </NavLink>
             </div>
           </CardFooter>

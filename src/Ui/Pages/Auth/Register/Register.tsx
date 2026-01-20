@@ -80,7 +80,7 @@ export const Register = () => {
     }
   };
 
-  // ❌ EXISTING validation UNCHANGED
+  // EXISTING validation UNCHANGED
   const validateSignupForm = () => {
     const newErrors: { email?: string; password?: string } = {};
     if (!formData.email) {
@@ -176,10 +176,10 @@ export const Register = () => {
                 />
               </motion.div>
               <CardTitle className="text-3xl font-bold text-green-400 font-mono glow-text">
-                [ CREATE ACCOUNT ]
+                CREATE ACCOUNT 
               </CardTitle>
               <CardDescription className="text-sm text-green-300/70 font-mono">
-                &gt; Register new user credentials_
+                Register new user credentials_
               </CardDescription>
             </CardHeader>
 
@@ -192,7 +192,7 @@ export const Register = () => {
                 transition={{ delay: 0.2 }}
                 className="space-y-2"
               >
-                <Label htmlFor="username" className="text-green-400 font-mono text-sm">&gt; Username</Label>
+                <Label htmlFor="username" className="text-green-400 font-mono text-sm"> Username</Label>
                 <Input
                   id="username"
                   name="username"
@@ -210,7 +210,7 @@ export const Register = () => {
                 transition={{ delay: 0.25 }}
                 className="space-y-2"
               >
-                <Label htmlFor="universityName" className="text-green-400 font-mono text-sm">&gt; University</Label>
+                <Label htmlFor="universityName" className="text-green-400 font-mono text-sm"> University</Label>
                 <Input
                   id="universityName"
                   name="universityName"
@@ -228,7 +228,7 @@ export const Register = () => {
                 transition={{ delay: 0.3 }}
                 className="space-y-2"
               >
-                <Label htmlFor="phoneNumber" className="text-green-400 font-mono text-sm">&gt; Phone</Label>
+                <Label htmlFor="phoneNumber" className="text-green-400 font-mono text-sm"> Phone</Label>
                 <Input
                   id="phoneNumber"
                   name="phoneNumber"
@@ -246,7 +246,7 @@ export const Register = () => {
                 transition={{ delay: 0.35 }}
                 className="space-y-2"
               >
-                <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; Email</Label>
+                <Label htmlFor="email" className="text-green-400 font-mono text-sm">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -274,7 +274,7 @@ export const Register = () => {
                 transition={{ delay: 0.4 }}
                 className="space-y-2"
               >
-                <Label htmlFor="password" className="text-green-400 font-mono text-sm">&gt; Password</Label>
+                <Label htmlFor="password" className="text-green-400 font-mono text-sm"> Password</Label>
                <div className="relative">
                  <Input
                   id="password"
@@ -319,20 +319,20 @@ export const Register = () => {
                   disabled={signupMutation.isPending}
                 >
                   {signupMutation.isPending
-                    ? "[ PROCESSING... ]"
-                    : "[ CREATE ACCOUNT ]"}
+                    ? " PROCESSING... "
+                    : " CREATE ACCOUNT "}
                 </Button>
               </motion.div>
 
               <Separator className="bg-green-500/20" />
 
               <p className="text-sm text-gray-400 font-mono">
-                &gt; Existing user?
+               Existing user?
                 <NavLink
                   to="/login"
                   className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors"
                 >
-                  [Login]
+                  Login
                 </NavLink>
               </p>
             </CardFooter>
@@ -344,10 +344,10 @@ export const Register = () => {
         <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl border-2 border-green-500/30">
           <DialogHeader>
             <DialogTitle className="text-green-400 text-center font-mono text-2xl glow-text">
-              [ VERIFY OTP ]
+               VERIFY OTP 
             </DialogTitle>
             <DialogDescription className="text-center text-gray-400 font-mono text-sm">
-              &gt; Enter 6-digit verification code_
+              Enter 6-digit verification code_
             </DialogDescription>
           </DialogHeader>
 
@@ -381,8 +381,8 @@ export const Register = () => {
                 className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 font-mono font-bold transition-all"
               >
                 {verifyOtpMutation.isPending
-                  ? "[ VERIFYING... ]"
-                  : "[ VERIFY OTP ]"}
+                  ? " VERIFYING... "
+                  : " VERIFY OTP "}
               </Button>
             </motion.div>
           </div>

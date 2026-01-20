@@ -24,10 +24,12 @@ export const CTF = () => {
   const [flags, setFlags] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [message, setMessage] = useState<{ [key: string]: string }>({});
+  const [solvedChallenges, setSolvedChallenges] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchChallenges();
+    fetchUserSolvedChallenges();
   }, []);
 
   const fetchChallenges = async () => {
@@ -36,6 +38,15 @@ export const CTF = () => {
       setChallenges(data.challenges);
     } catch (error: any) {
       console.error("Failed to load challenges:", error.message);
+    }
+  };
+
+  const fetchUserSolvedChallenges = async () => {
+    try {
+      const data = await apiFetch("/api/challenges/solved");
+      setSolvedChallenges(data.solvedChallenges || []);
+    } catch (error: any) {
+      console.error("Failed to load solved challenges:", error.message);
     }
   };
 
@@ -55,9 +66,10 @@ export const CTF = () => {
       setMessage({ ...message, [machineId]: data.message });
       if (data.success) {
         toast.success(data.message || "Flag submitted successfully");
-        // Refresh challenges to show updated solver info
+        // Refresh challenges and solved list to show updated solver info
         setTimeout(() => {
           fetchChallenges();
+          fetchUserSolvedChallenges();
           setFlags({ ...flags, [machineId]: "" });
         }, 1500);
         // Auto-clear success messages after 3 seconds
@@ -87,18 +99,9 @@ export const CTF = () => {
     <div className="min-h-screen p-8 relative z-10">
       <div className="max-w-7xl mx-auto">
           {/* Back Button */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={() => navigate(`/dashboard/auth/user/teams`)}
-          className="flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-400 text-green-400 rounded font-mono text-sm hover:bg-green-500/30 transition-colors mb-10 lg:mb-0 cursor-pointer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          BACK
-        </motion.button>
+       <div className="container">
+        
+       </div>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -173,40 +176,61 @@ export const CTF = () => {
                   </motion.a>
                   
                   <div className="space-y-3">
-                    <Input
-                      type="text"
-                      placeholder="Enter flag..."
-                      value={flags[challenge.id] || ""}
-                      onChange={(e) => handleFlagChange(challenge.id, e.target.value)}
-                      className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
-                    />
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button
-                        onClick={() => handleSubmit(challenge.id)}
-                        disabled={loading[challenge.id] || !flags[challenge.id]}
-                        className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all flex items-center justify-center gap-2"
-                      >
-                        {loading[challenge.id] ? (
-                          <>
-                            <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            >
-                              <Zap className="w-4 h-4" />
-                            </motion.div>
-                            SUBMITTING...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-4 h-4" />
-                            SUBMIT FLAG
-                          </>
-                        )}
-                      </Button>
-                    </motion.div>
+                    {solvedChallenges.includes(challenge.id) ? (
+                      <>
+                        <Input
+                          type="text"
+                          placeholder="Already solved"
+                          value=""
+                          disabled
+                          className="bg-slate-800/30 border-green-500/20 text-gray-500 placeholder:text-gray-600 font-mono cursor-not-allowed"
+                        />
+                        <Button
+                          disabled
+                          className="w-full bg-green-500/10 text-green-400/50 border-2 border-green-500/30 cursor-not-allowed font-mono font-bold flex items-center justify-center gap-2"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          ALREADY SOLVED
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Input
+                          type="text"
+                          placeholder="Enter flag..."
+                          value={flags[challenge.id] || ""}
+                          onChange={(e) => handleFlagChange(challenge.id, e.target.value)}
+                          className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
+                        />
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Button
+                            onClick={() => handleSubmit(challenge.id)}
+                            disabled={loading[challenge.id] || !flags[challenge.id]}
+                            className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all flex items-center justify-center gap-2"
+                          >
+                            {loading[challenge.id] ? (
+                              <>
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                >
+                                  <Zap className="w-4 h-4" />
+                                </motion.div>
+                                SUBMITTING...
+                              </>
+                            ) : (
+                              <>
+                                <Send className="w-4 h-4" />
+                                SUBMIT FLAG
+                              </>
+                            )}
+                          </Button>
+                        </motion.div>
+                      </>
+                    )}
                     {message[challenge.id] && (
                       <motion.p 
                         initial={{ opacity: 0, y: -10 }}
