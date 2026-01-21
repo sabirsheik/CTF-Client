@@ -103,10 +103,10 @@ export const ForgetPasswordModal = () => {
               />
             </motion.div>
             <CardTitle className="text-2xl font-bold text-green-400 font-mono glow-text">
-              [ FORGOT PASSWORD ]
+              FORGOT PASSWORD 
             </CardTitle>
             <CardDescription className="text-sm text-green-300/70 font-mono">
-              &gt; Enter email to receive OTP_
+               Enter email to receive OTP_
             </CardDescription>
           </CardHeader>
 
@@ -120,7 +120,7 @@ export const ForgetPasswordModal = () => {
               transition={{ delay: 0.2 }}
               className="space-y-2"
             >
-              <Label htmlFor="email" className="text-green-400 font-mono text-sm">&gt; Email Address</Label>
+              <Label htmlFor="email" className="text-green-400 font-mono text-sm"> Email Address</Label>
               <Input
                 id="email"
                 type="email"
@@ -151,7 +151,7 @@ export const ForgetPasswordModal = () => {
                 htmlFor="confirm"
                 className="text-gray-400 leading-snug font-mono text-xs"
               >
-                &gt; I confirm this email belongs to my account
+                 I confirm this email belongs to my account
               </Label>
             </motion.div>
           </CardContent>
@@ -166,17 +166,17 @@ export const ForgetPasswordModal = () => {
                 disabled={forgetPasswordMutation.isPending}
                 className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
               >
-                {forgetPasswordMutation.isPending ? "[ SENDING... ]" : "[ SEND OTP ]"}
+                {forgetPasswordMutation.isPending ? " SENDING... " : " SEND OTP "}
               </Button>
             </motion.div>
 
             <p className="text-sm text-gray-400 text-center font-mono">
-              &gt; Remember password?
+              Remember password?
               <NavLink
                 to="/login"
                 className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors"
               >
-                [Login]
+                Login
               </NavLink>
             </p>
           </CardFooter>

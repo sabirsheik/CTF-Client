@@ -26,7 +26,7 @@ interface Props {
 export const OTPVerifyModal = ({ email, onClose }: Props) => {
   // State variables
   const [otp, setOtp] = useState("");
-  const [timeLeft, setTimeLeft] = useState(30); // 30 sec timer
+  const [timeLeft, setTimeLeft] = useState(600); // 10 min timer
   const navigate = useNavigate();
   // Hook for OTP verification mutation
   const verifyOtpMutation = useVerifyOtp();

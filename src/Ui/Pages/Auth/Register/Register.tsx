@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useSignup, useVerifyOtp } from "../../../../Hook/Auth/useAuth";
@@ -25,7 +25,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Clock } from "lucide-react";
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -42,6 +42,7 @@ export const Register = () => {
   const [showNew, setShowNew] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 min timer
   const [errors, setErrors] = useState<{
     username?: string;
     email?: string;
@@ -53,6 +54,31 @@ export const Register = () => {
 
   const signupMutation = useSignup();
   const verifyOtpMutation = useVerifyOtp();
+
+  // Timer for OTP modal
+  useEffect(() => {
+    if (!showOtpModal) return;
+
+    if (timeLeft <= 0) {
+      toast.error("OTP expired");
+      setShowOtpModal(false);
+      navigate("/register");
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, showOtpModal, navigate]);
+
+  // Reset timer when modal opens
+  useEffect(() => {
+    if (showOtpModal) {
+      setTimeLeft(600);
+    }
+  }, [showOtpModal]);
 
   // ✅ SAME handler, just extended professionally
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,6 +158,10 @@ export const Register = () => {
       toast.error(err.message || "OTP verification failed");
     }
   };
+
+  // Calculate minutes and seconds for timer display
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   return (
     <>
@@ -351,6 +381,18 @@ export const Register = () => {
               Enter 6-digit verification code_
             </DialogDescription>
           </DialogHeader>
+
+          {/* Timer */}
+          <motion.div 
+            className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2"
+            animate={timeLeft <= 60 ? { scale: [1, 1.05, 1] } : {}}
+            transition={{ duration: 0.5, repeat: timeLeft <= 60 ? Infinity : 0 }}
+          >
+            <Clock className="w-4 h-4" />
+            <span className={timeLeft <= 60 ? "text-red-400" : "text-green-400"}>
+              {minutes}:{seconds.toString().padStart(2, "0")}
+            </span>
+          </motion.div>
 
           <div className="space-y-5 mt-4">
             <Input
