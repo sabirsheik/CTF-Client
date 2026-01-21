@@ -29,7 +29,7 @@ export const Teams = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-3xl lg:text-4xl font-bold mb-6 text-green-400 font-mono glow-text"
+            className="text-3xl lg:text-4xl font-bold mb-6 text-green-400 font-mono glow-text "
           >
             TEAMS PANEL 
           </motion.h1>

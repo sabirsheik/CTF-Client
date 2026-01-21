@@ -38,7 +38,7 @@ export const TeamsHeader = ({
 }: Props) => {
   return (
     <header className="mb-8">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ">
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -52,12 +52,12 @@ export const TeamsHeader = ({
           BACK
         </motion.button>
 
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mt-6">
           <div className="min-w-0">
-            <h1 className="text-3xl sm:text-4xl font-bold text-green-400 font-mono glow-text">
+            <h1 className="text-3xl sm:text-4xl font-bold text-green-400 font-mono glow-text text-center sm:text-left">
               TEAMS
             </h1>
-            <p className="text-green-300/70 font-mono text-sm mt-2">
+            <p className="text-green-300/70 font-mono text-sm mt-2 text-center lg:text-left">
               Request-based teams · 2–3 members · Secure invitations
             </p>
           </div>
