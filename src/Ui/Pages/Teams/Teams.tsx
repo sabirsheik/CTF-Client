@@ -29,7 +29,7 @@ export const Teams = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-bold mb-6 text-green-400 font-mono glow-text"
+            className="text-3xl lg:text-4xl font-bold mb-6 text-green-400 font-mono glow-text"
           >
             TEAMS PANEL 
           </motion.h1>
@@ -53,7 +53,7 @@ export const Teams = () => {
             >
               <Button
                 onClick={() => navigate("/ctf/teams")}
-                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold text-lg py-6 transition-all flex items-center justify-center gap-3"
+                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold text-[14px] lg:text-lg py-6 transition-all flex items-center justify-center gap-3"
               >
                 <Flag className="w-5 h-5" />
                 CTF Teams
@@ -69,7 +69,7 @@ export const Teams = () => {
             >
               <Button
                 onClick={() => navigate("/dashboard/auth/user/challenge")}
-                className="w-full bg-green-500/10 hover:bg-green-500/20 text-green-400 border-2 border-green-500/30 hover:border-green-400 cursor-pointer font-mono font-bold text-lg py-6 transition-all flex items-center justify-center gap-3"
+                className="w-full bg-green-500/10 hover:bg-green-500/20 text-green-400 border-2 border-green-500/30 hover:border-green-400 cursor-pointer font-mono font-bold text-[13px] lg:text-lg py-6 transition-all flex items-center justify-center gap-3"
               >
                 <Trophy className="w-5 h-5" />
                 CHALLENGES

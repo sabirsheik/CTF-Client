@@ -98,10 +98,10 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
             />
           </motion.div>
           <DialogTitle className="text-2xl font-bold text-green-400 font-mono glow-text">
-            [ VERIFY OTP ]
+           VERIFY OTP 
           </DialogTitle>
           <DialogDescription className="text-sm text-green-300/70 font-mono">
-            &gt; Enter 6-digit verification code_
+            Enter 6-digit verification code_
           </DialogDescription>
         </DialogHeader>
 
@@ -143,7 +143,7 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
               disabled={verifyOtpMutation.isPending}
               className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
             >
-              {verifyOtpMutation.isPending ? "[ VERIFYING... ]" : "[ VERIFY OTP ]"}
+              {verifyOtpMutation.isPending ? " VERIFYING... " : " VERIFY OTP "}
             </Button>
           </motion.div>
         </form>
@@ -157,7 +157,7 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
             onClick={onClose}
             className="block mx-auto text-gray-400 hover:text-green-400 font-mono transition-colors"
           >
-            &gt; Cancel
+            Cancel
           </motion.button>
         </div>
       </DialogContent>

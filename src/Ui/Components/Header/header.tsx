@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
           >
             <ShieldCheck className="w-7 h-7 text-green-400 drop-shadow-[0_0_8px_rgba(0,255,65,0.8)]" />
           </motion.div>
-          <h1 className="text-xs min-[470px]:text-base sm:text-lg font-mono font-bold tracking-widest glow-text cursor-pointer"   onClick={() => navigate(`/dashboard/auth/user/teams`)}>
+          <h1 className="text-lg min-[470px]:text-base sm:text-lg font-mono font-bold tracking-widest glow-text cursor-pointer"   onClick={() => navigate(`/dashboard/auth/user/teams`)}>
            CTF SYSTEM
           </h1>
         </motion.div>
