@@ -274,7 +274,7 @@ export const Teams = () => {
     <div className="min-h-screen relative z-10 px-4 py-6 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <TeamsHeader
-          onBack={() => navigate(`/dashboard/auth/user/ctf`)}
+          onBack={() => navigate(`/dashboard/auth/user/teams`)}
           createDisabled={!!myTeam}
           createOpen={createOpen}
           setCreateOpen={setCreateOpen}

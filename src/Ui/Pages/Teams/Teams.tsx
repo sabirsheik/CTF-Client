@@ -52,11 +52,11 @@ export const Teams = () => {
               transition={{ delay: 0.4 }}
             >
               <Button
-                onClick={() => navigate("/dashboard/auth/user/ctf")}
+                onClick={() => navigate("/ctf/teams")}
                 className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold text-lg py-6 transition-all flex items-center justify-center gap-3"
               >
                 <Flag className="w-5 h-5" />
-                CTF MACHINES
+                CTF Teams
               </Button>
             </motion.div>
             

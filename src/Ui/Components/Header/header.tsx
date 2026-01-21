@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
 
   const isOnCTFPage =
     location.pathname === "/ctf" ||
-    location.pathname === "/dashboard/auth/user/ctf";
+    location.pathname === "/ctf/teams";
 
   const LogoutUser = async () => {
     try {
@@ -82,12 +82,12 @@ export const Header: React.FC = () => {
         <div className="flex items-center gap-3">
           {isLoggedIn && isOnCTFPage && (
             <button
-              onClick={() => navigate("/ctf/teams")}
+              onClick={() => navigate("/dashboard/auth/user/ctf")}
               className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
                          border-2 border-green-500/50 text-green-400 bg-green-500/10
                          hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"
             >
-              TEAMS
+              CTF Mechines
             </button>
           )}
           {isLoggedIn ? (
