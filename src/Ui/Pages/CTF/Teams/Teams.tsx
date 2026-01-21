@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import apiFetch from "../../../../Hook/api/fetchApi";
 
 import type { BasicUser, JoinRequest, Team, TeamInvite } from "./types";
@@ -11,10 +12,46 @@ import { AllTeamsSection } from "./components/AllTeamsSection";
 import { InviteUserDialog } from "./components/InviteUserDialog";
 import { JoinRequestsDialog } from "./components/JoinRequestsDialog";
 
+const TEAMS_PER_PAGE = 1;
+
 export const Teams = () => {
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [invites, setInvites] = useState<TeamInvite[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  // Fetch teams with infinite query
+  const {
+    data: teamsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: teamsLoading,
+    refetch: refetchTeams,
+  } = useInfiniteQuery({
+    queryKey: ["teams"],
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await apiFetch(`/api/teams?page=${pageParam}&limit=${TEAMS_PER_PAGE}`);
+      return res;
+    },
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+    initialPageParam: 1,
+  });
+
+  // Fetch invites
+  const { data: invitesData, refetch: refetchInvites } = useQuery({
+    queryKey: ["teamInvites"],
+    queryFn: async () => {
+      const res = await apiFetch("/api/teams/invites");
+      return res;
+    },
+  });
+
+  const teams = useMemo(() => {
+    if (!teamsData?.pages) return [];
+    return teamsData.pages.flatMap((page) => page.teams || []);
+  }, [teamsData]);
+
+  const invites = invitesData?.invites || [];
 
   const [createOpen, setCreateOpen] = useState(false);
   const [createName, setCreateName] = useState("");
@@ -33,34 +70,32 @@ export const Teams = () => {
   const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
   const [requestsLoading, setRequestsLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const myTeam = useMemo(
     () => teams.find((t) => t.viewer.isMember) ?? null,
     [teams]
   );
 
-  const refresh = async () => {
-    const [teamsRes, invitesRes] = await Promise.all([
-      apiFetch("/api/teams"),
-      apiFetch("/api/teams/invites"),
-    ]);
-    setTeams(teamsRes.teams || []);
-    setInvites(invitesRes.invites || []);
-  };
+  const refresh = useCallback(async () => {
+    await Promise.all([refetchTeams(), refetchInvites()]);
+  }, [refetchTeams, refetchInvites]);
 
+  // Infinite scroll observer
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        await refresh();
-      } catch (e: any) {
-        toast.error(e.message || "Failed to load teams");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   // Debounced search for create dialog
   useEffect(() => {
@@ -262,10 +297,13 @@ export const Teams = () => {
     }
   };
 
-  if (loading) {
+  if (teamsLoading) {
     return (
-      <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 font-mono text-green-400">
-        Loading...
+      <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 font-mono text-green-400 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mb-4"></div>
+          <div>Loading teams...</div>
+        </div>
       </div>
     );
   }
@@ -303,6 +341,25 @@ export const Teams = () => {
         />
 
         <AllTeamsSection teams={teams} myTeam={myTeam} onRequestJoin={requestJoin} />
+
+        {/* Infinite scroll trigger */}
+        <div ref={observerTarget} className="py-4 text-center font-mono">
+          {isFetchingNextPage && (
+            <div className="flex flex-col items-center gap-3">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
+              <span className="text-green-400/70 text-sm">Loading more teams...</span>
+            </div>
+          )}
+          {!hasNextPage && teams.length > 0 && (
+            <div className="text-green-400/50 text-sm py-4">
+              <div className="inline-flex items-center gap-2">
+                <div className="h-px w-8 bg-green-400/30"></div>
+                <span>You've reached the last team</span>
+                <div className="h-px w-8 bg-green-400/30"></div>
+              </div>
+            </div>
+          )}
+        </div>
 
         <InviteUserDialog
           open={inviteOpen}
