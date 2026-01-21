@@ -202,10 +202,10 @@ export const Submit = () => {
             />
           </motion.div>
           <CardTitle className="text-lg font-bold text-blue-400 font-mono glow-text">
-            Stalls Submission
+            Project Display - Stalls 
           </CardTitle>
           <CardDescription className="text-xs text-blue-300/70 font-mono">
-            Optional - Submit your stall details
+           Submit your stall details
           </CardDescription>
         </CardHeader>
 
@@ -390,7 +390,7 @@ export const Submit = () => {
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
-                placeholder="+1234567890"
+                placeholder="03345678909"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 className="bg-slate-800/50 border-blue-500/30 text-blue-300 placeholder:text-gray-600 focus:border-blue-400 focus:ring-blue-400/20 font-mono text-sm h-9"

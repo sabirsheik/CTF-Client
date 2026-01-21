@@ -82,8 +82,8 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
 
   return (
     // OTP Verification Dialog
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 overflow-hidden">
+    <Dialog open onOpenChange={(open) => !open ? null : onClose()}>
+      <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 overflow-hidden" onInteractOutside={(e) => e.preventDefault()}>
         <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
         <DialogHeader className="text-center space-y-3 relative z-10">
           <motion.div
@@ -110,11 +110,11 @@ export const OTPVerifyModal = ({ email, onClose }: Props) => {
         {/* Timer */}
         <motion.div 
           className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2 relative z-10"
-          animate={timeLeft <= 10 ? { scale: [1, 1.05, 1] } : {}}
-          transition={{ duration: 0.5, repeat: timeLeft <= 10 ? Infinity : 0 }}
+          animate={timeLeft <= 60 ? { scale: [1, 1.05, 1] } : {}}
+          transition={{ duration: 0.5, repeat: timeLeft <= 60 ? Infinity : 0 }}
         >
           <Clock className="w-4 h-4" />
-          <span className={timeLeft <= 10 ? "text-red-400" : "text-green-400"}>
+          <span className={timeLeft <= 60 ? "text-red-400" : "text-green-400"}>
             {minutes}:{seconds.toString().padStart(2, "0")}
           </span>
         </motion.div>

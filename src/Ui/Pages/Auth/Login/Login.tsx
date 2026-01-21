@@ -141,7 +141,7 @@ export const Login = () => {
                 Login to Cyber CTF And Challenges 
               </CardTitle>
               <CardDescription className="text-sm text-green-300/70 font-mono">
-                Enter credentials to proceed
+           Enter your login details to proceed. New here? Register first
               </CardDescription>
             </CardHeader>
 
