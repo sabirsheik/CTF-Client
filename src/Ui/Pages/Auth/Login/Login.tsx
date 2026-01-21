@@ -115,16 +115,16 @@ export const Login = () => {
       </div>
 
       {/* Two Column Layout */}
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start relative z-10">
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-4 items-center lg:items-start justify-items-center relative z-10">
         {/* Login Card - Left Side */}
         <motion.div
           initial={loginCardInitial}
           animate={loginCardAnimate}
           transition={{ duration: 0.6 }}
-          className="w-full"
+          className="w-full max-w-md mb-6 lg:mb-0"
         >
           <Card className="shadow-2xl bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent " />
             <CardHeader className="space-y-3 text-center relative z-10">
               <motion.div
                 animate={{ rotate: [0, 360] }}
