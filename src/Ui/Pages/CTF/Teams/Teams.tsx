@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import apiFetch from "../../../../Hook/api/fetchApi";
 
-import type { BasicUser, JoinRequest, Team, TeamInvite } from "./types";
+import type { BasicUser, JoinRequest, Team } from "./types";
 import { TeamsHeader } from "./components/TeamsHeader";
 import { InvitationsSection } from "./components/InvitationsSection";
 import { MyTeamSection } from "./components/MyTeamSection";
@@ -15,7 +15,7 @@ import { JoinRequestsDialog } from "./components/JoinRequestsDialog";
 const TEAMS_PER_PAGE = 1;
 
 export const Teams = () => {
-  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const observerTarget = useRef<HTMLDivElement>(null);
 
