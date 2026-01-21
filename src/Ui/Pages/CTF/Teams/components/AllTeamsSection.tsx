@@ -1,9 +1,12 @@
 import { Card } from "../../../../../components/ui/card";
 import { Button } from "../../../../../components/ui/button";
 import { Separator } from "../../../../../components/ui/separator";
+import { Input } from "../../../../../components/ui/input";
 import type { Team } from "../types";
 import { StatusPill } from "./StatusPill";
 import { MemberChip } from "./MemberChip";
+import { useState } from "react";
+import { Search } from "lucide-react";
 
 type Props = {
   teams: Team[];
@@ -12,17 +15,39 @@ type Props = {
 };
 
 export const AllTeamsSection = ({ teams, myTeam, onRequestJoin }: Props) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter teams based on search term
+  const filteredTeams = teams.filter((team) =>
+    team.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <section>
-      <h2 className="text-lg sm:text-xl font-mono font-bold text-green-400 mb-3">
-        ALL TEAMS
-      </h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <h2 className="text-lg sm:text-xl font-mono font-bold text-green-400">
+          ALL TEAMS
+        </h2>
+        
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-400/60" />
+          <Input
+            type="text"
+            placeholder="Search teams..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono text-sm"
+          />
+        </div>
+      </div>
 
-      {teams.length === 0 ? (
-        <div className="font-mono text-green-300/60">No teams yet.</div>
+      {filteredTeams.length === 0 ? (
+        <div className="font-mono text-green-300/60">
+          {searchTerm ? "No teams found matching your search." : "No teams yet."}
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          {teams.map((team) => {
+          {filteredTeams.map((team) => {
             const alreadyInTeam = !!myTeam && !team.viewer.isMember;
 
             return (
