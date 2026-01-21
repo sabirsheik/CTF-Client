@@ -1,9 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
-
-// ==============================
 //  AUTH PAGES (LAZY LOADED)
-// ==============================
 const Login = lazy(() =>
   import("./Ui/Pages/Auth/Login/Login").then((m) => ({ default: m.Login })),
 );
@@ -26,9 +23,7 @@ const ResetPassword = lazy(() =>
   })),
 );
 
-// ==============================
 //  DASHBOARDS (LAZY LOADED)
-// ==============================
 const Analyst = lazy(() =>
   import("./Dashboards/User/User").then((m) => ({
     default: m.Analyst,
@@ -41,9 +36,7 @@ const AdminDashboard = lazy(() =>
   })),
 );
 
-// ==============================
 //  CTF PAGES (LAZY LOADED)
-// ==============================
 import { CTF } from "./Ui/Pages/CTF/CTF";
 const TeamsPanel = lazy(() =>
   import("./Ui/Pages/Teams/Teams").then((m) => ({
@@ -69,60 +62,40 @@ const Challenge = lazy(() =>
   })),
 );
 
-// ==============================
 //  COMPONENTS & CONTEXT
-// ==============================
+
 import { Header } from "./Ui/Components/Header/header";
 import { useUser } from "./Hook/Auth/useAuth";
 import ProtectedRoute from "./context/Secure/ProctectedRoute";
 import DashboardRedirect from "./context/Secure/DashboradRedirect";
 
 export const App = () => {
-  // ==============================
   //  USER AUTH STATE
-  // ==============================
   const { data: user } = useUser();
   const isLoggedIn = !!user;
 
   return (
     <>
-      {/* ==============================
-           HEADER (ONLY WHEN LOGGED IN)
-         ============================== */}
+      {/*  HEADER (ONLY WHEN LOGGED IN) */}
       {isLoggedIn && <Header />}
 
-      {/* ==============================
-          SUSPENSE WRAPPER
-          Fallback shown while loading chunks
-         ============================== */}
+      {/* SUSPENSE WRAPPER Fallback shown while loading chunks*/}
       <Suspense fallback={<div className="p-4">Loading...</div>}>
         <Routes>
-          {/* ==============================
-              PUBLIC ROUTES
-             ============================== */}
+          {/* PUBLIC ROUTES*/}
           <Route
             path="/"
             element={!isLoggedIn ? <Login /> : <Navigate to="/dashboard" />}
           />
-
           <Route path="/register" element={<Register />} />
           <Route path="/forget-password" element={<ForgetPasswordModal />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-
-          {/* ==============================
-              DASHBOARD REDIRECT
-              ROLE BASED REDIRECTION
-             ============================== */}
+          {/* DASHBOARD REDIRECT ROLE BASED REDIRECTION */}
           <Route path="/dashboard" element={<DashboardRedirect />} />
-
-          {/* ==============================
-              USER DASHBOARD (PROTECTED)
-             ============================== */}
+          {/*  USER DASHBOARD (PROTECTED) */}
           <Route element={<ProtectedRoute role="user" />}>
             <Route path="/dashboard/auth/user" element={<Analyst />}>
-              {/* ==============================
-              FILTERING ROUND
-             ============================== */}
+              {/* FILTERING ROUND*/}
               {/* <Route index element={<FilteringRound />} /> */}
               {/* Ctf Page */}
               <Route path="ctf" element={<CTF />} />
@@ -133,22 +106,15 @@ export const App = () => {
             </Route>
           </Route>
 
-          {/* ==============================
-              TOP-LEVEL CTF ROUTES (PROTECTED)
-              Matches /ctf and /ctf/teams
-             ============================== */}
+          {/* TOP-LEVEL CTF ROUTES (PROTECTED) Matches /ctf and /ctf/teams */}
           <Route element={<ProtectedRoute role="user" />}>
-            <Route path="/ctf" element={<CTF />} />
             <Route path="/ctf/teams" element={<CTFTeams />} />
           </Route>
-
-          {/* ==============================
-              ADMIN DASHBOARD (PROTECTED)
-             ============================== */}
+          {/* ADMIN DASHBOARD (PROTECTED) */}
           <Route element={<ProtectedRoute role="admin" />}>
             <Route path="/dashboard/auth/admin" element={<AdminDashboard />} />
           </Route>
-
+          {/* CATCH ALL ROUTE - REDIRECT BASED ON AUTH */}
           <Route
             path="*"
             element={
