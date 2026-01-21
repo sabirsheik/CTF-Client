@@ -37,7 +37,12 @@ const AdminDashboard = lazy(() =>
 );
 
 //  CTF PAGES (LAZY LOADED)
-import { CTF } from "./Ui/Pages/CTF/CTF";
+const CTF = lazy(() =>
+  import("./Ui/Pages/CTF/CTF").then((m) => ({
+    default: m.CTF,
+  })),
+);
+
 const TeamsPanel = lazy(() =>
   import("./Ui/Pages/Teams/Teams").then((m) => ({
     default: m.Teams,
@@ -63,7 +68,7 @@ const Challenge = lazy(() =>
 );
 
 //  COMPONENTS & CONTEXT
-
+import { Loading } from "./components/Loading/Loading";
 import { Header } from "./Ui/Components/Header/header";
 import { useUser } from "./Hook/Auth/useAuth";
 import ProtectedRoute from "./context/Secure/ProctectedRoute";
@@ -79,12 +84,16 @@ export const App = () => {
       {/*  HEADER (ONLY WHEN LOGGED IN) */}
       {isLoggedIn && <Header />}
 
-      {/* SUSPENSE WRAPPER Fallback shown while loading chunks*/}
-      <Suspense fallback={<div className="p-4">Loading...</div>}>
+      {/* SUSPENSE WRAPPER - Professional loading shown while loading chunks*/}
+      <Suspense fallback={<Loading />}>
         <Routes>
           {/* PUBLIC ROUTES*/}
           <Route
             path="/"
+            element={!isLoggedIn ? <Login /> : <Navigate to="/dashboard" />}
+          />
+          <Route
+            path="/login"
             element={!isLoggedIn ? <Login /> : <Navigate to="/dashboard" />}
           />
           <Route path="/register" element={<Register />} />
