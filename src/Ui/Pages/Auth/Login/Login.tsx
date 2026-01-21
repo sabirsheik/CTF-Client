@@ -93,7 +93,7 @@ export const Login = () => {
 
   return (
     <>   
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
@@ -102,7 +102,7 @@ export const Login = () => {
             opacity: [0.3, 0.5, 0.3]
           }}
           transition={{ duration: 8, repeat: Infinity }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-500/30 to-blue-500/30 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-green-500/30 to-blue-500/30 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -110,149 +110,154 @@ export const Login = () => {
             opacity: [0.3, 0.5, 0.3]
           }}
           transition={{ duration: 8, repeat: Infinity, delay: 1 }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-green-500/30 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-br from-blue-500/30 to-green-500/30 rounded-full blur-3xl"
         />
       </div>
 
-      {/* Login Card */}
-      <motion.div
-        initial={loginCardInitial}
-        animate={loginCardAnimate}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md"
-      >
-        <Card className="shadow-2xl bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 relative z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent" />
-          <CardHeader className="space-y-3 text-center relative z-10">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="mx-auto w-16 h-16 border-2 border-green-400 rounded-full flex items-center justify-center mb-2"
-            >
+      {/* Two Column Layout */}
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start relative z-10">
+        {/* Login Card - Left Side */}
+        <motion.div
+          initial={loginCardInitial}
+          animate={loginCardAnimate}
+          transition={{ duration: 0.6 }}
+          className="w-full"
+        >
+          <Card className="shadow-2xl bg-slate-900/90 backdrop-blur-xl border-2 border-green-500/30 relative overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent" />
+            <CardHeader className="space-y-3 text-center relative z-10">
               <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-8 h-8 bg-green-400/20 rounded-full"
-              />
-            </motion.div>
-            <CardTitle className="text-xl font-bold text-green-400 font-mono glow-text">
-               Login to Cyber CTF And Challenges 
-            </CardTitle>
-            <CardDescription className="text-sm text-green-300/70 font-mono">
-               Enter credentials to proceed
-            </CardDescription>
-          </CardHeader>
-
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-5 relative z-10">
-            {/* Email */}
-            <motion.div 
-              initial={formFieldInitial}
-              animate={formFieldAnimate}
-              transition={{ delay: 0.2 }}
-              className="space-y-2"
-            >
-              <Label htmlFor="email" className="text-green-400 font-mono text-sm"> Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="user@system.ctf"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
-              />
-              {errors.email && (
-                <motion.p 
-                  initial={errorInitial}
-                  animate={errorAnimate}
-                  className="text-xs text-red-400 font-mono"
-                >
-                  ! {errors.email}
-                </motion.p>
-              )}
-            </motion.div>
-
-            {/* Password */}
-            <motion.div 
-              initial={formFieldInitial}
-              animate={formFieldAnimate}
-              transition={{ delay: 0.3 }}
-              className="space-y-2"
-            >
-              <Label htmlFor="password" className="text-green-400 font-mono text-sm">Password</Label>
-             <div className="relative">
-               <Input
-                id="password"
-                name="password"
-                type={showNew ? "text" : "password"}
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono pr-12"
-              />
-               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                type="button"
-                onClick={() => setShowNew(!showNew)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400 cursor-pointer"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="mx-auto w-16 h-16 border-2 border-green-400 rounded-full flex items-center justify-center mb-2"
               >
-                {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
-              </motion.button>
-             </div>
-              {errors.password && (
-                <motion.p 
-                  initial={errorInitial}
-                  animate={errorAnimate}
-                  className="text-xs text-red-400 font-mono"
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-8 h-8 bg-green-400/20 rounded-full"
+                />
+              </motion.div>
+              <CardTitle className="text-xl font-bold text-green-400 font-mono glow-text">
+                Login to Cyber CTF And Challenges 
+              </CardTitle>
+              <CardDescription className="text-sm text-green-300/70 font-mono">
+                Enter credentials to proceed
+              </CardDescription>
+            </CardHeader>
+
+            <form onSubmit={handleSubmit}>
+              <CardContent className="space-y-5 relative z-10">
+                {/* Email */}
+                <motion.div 
+                  initial={formFieldInitial}
+                  animate={formFieldAnimate}
+                  transition={{ delay: 0.2 }}
+                  className="space-y-2"
                 >
-                  ! {errors.password}
-                </motion.p>
-              )}
-            </motion.div>
-          </CardContent>
+                  <Label htmlFor="email" className="text-green-400 font-mono text-sm"> Email address</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="user@system.ctf"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
+                  />
+                  {errors.email && (
+                    <motion.p 
+                      initial={errorInitial}
+                      animate={errorAnimate}
+                      className="text-xs text-red-400 font-mono"
+                    >
+                      ! {errors.email}
+                    </motion.p>
+                  )}
+                </motion.div>
 
-          <CardFooter className="flex flex-col gap-5 mt-4 relative z-10">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full"
-            >
-              <Button
-                type="submit"
-                disabled={loginMutation.isPending}
-                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
-              >
-                {loginMutation.isPending ? " LOGIN... " : " LOGIN"}
-              </Button>
-            </motion.div>
-
-            <Separator className="bg-green-500/20" />
-
-            <div className="text-center space-y-3">
-              <p className="text-sm text-gray-400 font-mono">
-                New user ?
-                <NavLink
-                  to="/register"
-                  className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors underline-offset-2"
+                {/* Password */}
+                <motion.div 
+                  initial={formFieldInitial}
+                  animate={formFieldAnimate}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-2"
                 >
-                  Register Here
-                </NavLink>
-              </p>
+                  <Label htmlFor="password" className="text-green-400 font-mono text-sm">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showNew ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono pr-12"
+                    />
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      type="button"
+                      onClick={() => setShowNew(!showNew)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400 cursor-pointer"
+                    >
+                      {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </motion.button>
+                  </div>
+                  {errors.password && (
+                    <motion.p 
+                      initial={errorInitial}
+                      animate={errorAnimate}
+                      className="text-xs text-red-400 font-mono"
+                    >
+                      ! {errors.password}
+                    </motion.p>
+                  )}
+                </motion.div>
+              </CardContent>
 
-              <NavLink
-                to="/forget-password"
-                className="text-sm text-green-400/70 hover:text-green-400 hover:underline transition-colors font-mono block"
-              >
-               Forgot credentials?
-              </NavLink>
-            </div>
-          </CardFooter>
-        </form>
-      </Card>
-    </motion.div>
-    <Submit />
+              <CardFooter className="flex flex-col gap-5 mt-4 relative z-10">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full"
+                >
+                  <Button
+                    type="submit"
+                    disabled={loginMutation.isPending}
+                    className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 cursor-pointer font-mono font-bold transition-all"
+                  >
+                    {loginMutation.isPending ? " LOGIN... " : " LOGIN"}
+                  </Button>
+                </motion.div>
+
+                <Separator className="bg-green-500/20" />
+
+                <div className="text-center space-y-3">
+                  <p className="text-sm text-gray-400 font-mono">
+                    New user ?
+                    <NavLink
+                      to="/register"
+                      className="ml-2 text-green-400 hover:text-green-300 hover:underline transition-colors underline-offset-2"
+                    >
+                      Register Here
+                    </NavLink>
+                  </p>
+
+                  <NavLink
+                    to="/forget-password"
+                    className="text-sm text-green-400/70 hover:text-green-400 hover:underline transition-colors font-mono block"
+                  >
+                    Forgot credentials?
+                  </NavLink>
+                </div>
+              </CardFooter>
+            </form>
+          </Card>
+        </motion.div>
+
+        {/* Stalls Submission Form - Right Side */}
+        <Submit />
+      </div>
     </div>
     </>
   );
