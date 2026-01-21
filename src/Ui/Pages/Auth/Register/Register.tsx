@@ -371,9 +371,10 @@ export const Register = () => {
         </Card>
       </motion.div>
       </div>
-      <Dialog open={showOtpModal} onOpenChange={setShowOtpModal}>
-        <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl border-2 border-green-500/30">
-          <DialogHeader>
+      <Dialog open={showOtpModal} onOpenChange={(open) => !open ? null : setShowOtpModal(open)}>
+        <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 overflow-hidden" onInteractOutside={(e) => e.preventDefault()}>
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+          <DialogHeader className="relative z-10">
             <DialogTitle className="text-green-400 text-center font-mono text-2xl glow-text">
                VERIFY OTP 
             </DialogTitle>
@@ -384,7 +385,7 @@ export const Register = () => {
 
           {/* Timer */}
           <motion.div 
-            className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2"
+            className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2 relative z-10"
             animate={timeLeft <= 60 ? { scale: [1, 1.05, 1] } : {}}
             transition={{ duration: 0.5, repeat: timeLeft <= 60 ? Infinity : 0 }}
           >
@@ -394,7 +395,9 @@ export const Register = () => {
             </span>
           </motion.div>
 
-          <div className="space-y-5 mt-4">
+          <Separator className="bg-green-500/20" />
+
+          <div className="space-y-5 mt-4 relative z-10">
             <Input
               name="otp"
               maxLength={6}
@@ -428,6 +431,21 @@ export const Register = () => {
                   : " VERIFY OTP "}
               </Button>
             </motion.div>
+          </div>
+
+          <Separator className="bg-green-500/20" />
+
+          {/* Footer Actions */}
+          <div className="text-center text-sm mt-3 relative z-10">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="button"
+              onClick={() => setShowOtpModal(false)}
+              className="block mx-auto text-gray-400 hover:text-green-400 font-mono transition-colors"
+            >
+              &gt; Cancel
+            </motion.button>
           </div>
         </DialogContent>
       </Dialog>
