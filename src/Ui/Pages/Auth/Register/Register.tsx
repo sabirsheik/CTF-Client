@@ -34,7 +34,7 @@ export const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    // universityName: "",
+    universityName: "",
     // phoneNumber: "",
     password: "",
   });
@@ -45,7 +45,7 @@ export const Register = () => {
   const [errors, setErrors] = useState<{
     username?: string;
     email?: string;
-    // universityName?: string;
+    universityName?: string;
     // phoneNumber?: string;
     password?: string;
     otp?: string;
@@ -68,6 +68,7 @@ export const Register = () => {
     if (name === "username") {
       updatedValue = value.toLowerCase().trim();
     }
+    
 
     // if (name === "phoneNumber") {
     //   updatedValue = value.trim();
@@ -204,7 +205,7 @@ export const Register = () => {
               </motion.div>
 
               {/* University Name */}
-              {/* <motion.div 
+              <motion.div 
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.25 }}
@@ -219,7 +220,7 @@ export const Register = () => {
                   onChange={handleInputChange}
                   className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
                 />
-              </motion.div> */}
+              </motion.div>
 
               {/* Phone Number
               <motion.div 
