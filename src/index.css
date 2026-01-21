@@ -140,6 +140,13 @@
     overflow-x: hidden;
   }
   
+  /* Smaller font size for small screens */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+  
   body::before {
     content: '';
     position: fixed;
