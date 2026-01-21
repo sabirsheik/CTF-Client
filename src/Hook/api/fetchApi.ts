@@ -8,17 +8,21 @@ interface FetchOptions extends RequestInit {
 const apiFetch = async (endpoint: string, options: FetchOptions = {}) => {
   // Construct full URL
   const url = `${API_BASE_URL}${endpoint}`;
+
+  const bodyIsFormData =
+    typeof FormData !== "undefined" && options.body instanceof FormData;
+
   //  Configure fetch options
   const config: RequestInit = {
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      ...(bodyIsFormData ? {} : { "Content-Type": "application/json" }),
       ...options.headers,
     },
     ...options,
   };
   // Stringify body if it's an object
-  if (config.body && typeof config.body === "object") {
+  if (config.body && typeof config.body === "object" && !bodyIsFormData) {
     config.body = JSON.stringify(config.body);
   }
   // Make the fetch call

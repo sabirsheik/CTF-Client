@@ -1,8 +1,14 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import {  Terminal, Lock, Bug, Smartphone, Key, Zap, Database, ArrowLeft } from "lucide-react";
+import { Terminal, Lock, Bug, Smartphone, Key, Zap, Database, ArrowLeft, UploadCloud, FileText, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
+import { toast } from "sonner";
+import apiFetch from "../../../Hook/api/fetchApi";
 
 interface Challenge {
   id: number;
@@ -55,6 +61,140 @@ const challenges: Challenge[] = [
     gradient: "from-black-500/20 to-teal-500/20"
   }
 ];
+
+const formatBytes = (bytes: number) => {
+  if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const value = bytes / Math.pow(1024, i);
+  return `${value.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
+};
+
+const SubmitChallengeDialog = ({ challengeId, challengeTitle }: { challengeId: string; challengeTitle: string }) => {
+  const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+
+  const totalSize = useMemo(() => files.reduce((sum, f) => sum + (f?.size || 0), 0), [files]);
+
+  const onPickFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    const picked = Array.from(e.target.files ?? []);
+    setFiles(picked);
+  };
+
+  const upload = async () => {
+    if (!files.length) {
+      toast.error("Please choose at least one file");
+      return;
+    }
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file));
+
+    try {
+      setUploading(true);
+      await apiFetch(`/api/challenges/${encodeURIComponent(challengeId)}/submissions`, {
+        method: "POST",
+        body: formData,
+      });
+      toast.success("Submission uploaded successfully");
+      setFiles([]);
+      setOpen(false);
+    } catch (err: any) {
+      toast.error(err?.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.05 }}
+          className="px-6 py-2 bg-green-500/20 border border-green-400 text-green-400 rounded font-mono text-sm hover:bg-green-500/30 transition-colors"
+        >
+          SUBMIT
+        </motion.button>
+      </DialogTrigger>
+
+      <DialogContent className="border-green-500/30 bg-black/90 text-green-100 backdrop-blur-xl">
+        <DialogHeader>
+          <DialogTitle className="font-mono text-green-400">Submit: {challengeTitle}</DialogTitle>
+          <DialogDescription className="font-mono text-green-300/70">
+            Upload PDFs, images, or any allowed file type. Maximum size is 500MB per file. One submission per challenge.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-3">
+          <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <UploadCloud className="w-4 h-4 text-green-400" />
+              <p className="font-mono text-sm text-green-300">Choose files to upload</p>
+            </div>
+            <Input
+              type="file"
+              multiple
+              onChange={onPickFiles}
+              className="border-green-500/30 text-green-200 file:text-green-300"
+            />
+            <p className="mt-2 font-mono text-xs text-green-300/70">
+              Tip: You can select multiple files (PDF, images, documents). Allowed types are configurable by admin.
+            </p>
+          </div>
+
+          {files.length > 0 && (
+            <div className="rounded-md border border-green-500/30 bg-black/40 p-3">
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-mono text-sm text-green-300">Selected files</p>
+                <p className="font-mono text-xs text-green-300/70">Total: {formatBytes(totalSize)}</p>
+              </div>
+              <div className="max-h-40 overflow-auto space-y-2 pr-1">
+                {files.map((f) => (
+                  <div key={`${f.name}-${f.size}-${f.lastModified}`} className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <FileText className="w-4 h-4 text-green-400 shrink-0" />
+                      <span className="font-mono text-xs text-green-200 truncate">{f.name}</span>
+                    </div>
+                    <span className="font-mono text-xs text-green-300/70 shrink-0">{formatBytes(f.size)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setOpen(false)}
+            className="border-green-500/30 bg-transparent text-green-300 hover:bg-green-500/10"
+            disabled={uploading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            onClick={upload}
+            className="bg-green-500/20 border border-green-400 text-green-400 hover:bg-green-500/30"
+            disabled={uploading}
+          >
+            {uploading ? (
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Uploading...
+              </span>
+            ) : (
+              "Upload"
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export const Challenge = () => {
   const navigate = useNavigate();
@@ -184,12 +324,10 @@ export const Challenge = () => {
                     <p className="text-[16px] text-gray-300 leading-relaxed">{challenge.description}</p>
                   </div>
                   <div className="flex items-center justify-center pt-4 border-t border-green-500/20">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      className="px-6 py-2 bg-green-500/20 border border-green-400 text-green-400 rounded font-mono text-sm hover:bg-green-500/30 transition-colors"
-                    >
-                      READY TO HACK
-                    </motion.div>
+                    <SubmitChallengeDialog
+                      challengeId={String(challenge.id)}
+                      challengeTitle={challenge.title}
+                    />
                   </div>
                 </CardContent>
               </Card>
