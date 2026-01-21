@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
           >
             <ShieldCheck className="w-7 h-7 text-green-400 drop-shadow-[0_0_8px_rgba(0,255,65,0.8)]" />
           </motion.div>
-          <h1 className="text-base sm:text-lg font-mono font-bold tracking-widest glow-text cursor-pointer"   onClick={() => navigate(`/dashboard/auth/user/teams`)}>
+          <h1 className="text-xs min-[470px]:text-base sm:text-lg font-mono font-bold tracking-widest glow-text cursor-pointer"   onClick={() => navigate(`/dashboard/auth/user/teams`)}>
            CTF SYSTEM
           </h1>
         </motion.div>
@@ -83,7 +83,7 @@ export const Header: React.FC = () => {
           {isLoggedIn && isOnCTFPage && (
             <button
               onClick={() => navigate("/dashboard/auth/user/ctf")}
-              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+              className="flex items-center gap-2 px-3 min-[470px]:px-5 py-2 font-mono text-xs min-[470px]:text-sm rounded-lg
                          border-2 border-green-500/50 text-green-400 bg-green-500/10
                          hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"
             >
@@ -95,24 +95,24 @@ export const Header: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={LogoutUser}
-              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+              className="flex items-center gap-2 px-3 sm:px-5 py-2 font-mono text-sm rounded-lg
                          border-2 border-red-500/50 text-red-400 bg-red-500/10
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              LOGOUT
+              <span className="hidden min-[570px]:inline">LOGOUT</span>
             </motion.button>
           ) : (
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={LogoutUser}
-              className="flex items-center gap-2 px-5 py-2 font-mono text-sm rounded-lg
+              className="flex items-center gap-2 px-3 sm:px-5 py-2 font-mono text-sm rounded-lg
                          border-2 border-red-500/50 text-red-400 bg-red-500/10
                          hover:bg-red-500/20 hover:border-red-400 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-              LOGIN
+              <span className="hidden min-[570px]:inline">LOGIN</span>
             </motion.button>
           )}
         </div>
