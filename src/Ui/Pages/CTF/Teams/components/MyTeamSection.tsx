@@ -30,7 +30,7 @@ export const MyTeamSection = ({
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div className="min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="font-mono text-green-300 text-xl sm:text-2xl font-bold wrap-break-word">
+              <div className="font-mono text-green-300  text-xl sm:text-2xl font-bold wrap-break-word">
                 {myTeam.name}
               </div>
               <StatusPill status={myTeam.status} />

@@ -35,7 +35,7 @@ export const Register = () => {
     username: "",
     email: "",
     universityName: "",
-    // phoneNumber: "",
+    phoneNumber: "",
     password: "",
   });
 
@@ -47,7 +47,7 @@ export const Register = () => {
     username?: string;
     email?: string;
     universityName?: string;
-    // phoneNumber?: string;
+    phoneNumber?: string;
     password?: string;
     otp?: string;
   }>({});
@@ -96,9 +96,9 @@ export const Register = () => {
     }
     
 
-    // if (name === "phoneNumber") {
-    //   updatedValue = value.trim();
-    // }
+    if (name === "phoneNumber") {
+      updatedValue = value.trim();
+    }
 
     setFormData((prev) => ({ ...prev, [name]: updatedValue }));
 
@@ -252,7 +252,7 @@ export const Register = () => {
                 />
               </motion.div>
 
-              {/* Phone Number
+              Phone Number
               <motion.div 
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -268,7 +268,7 @@ export const Register = () => {
                   onChange={handleInputChange}
                   className="bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
                 />
-              </motion.div> */}
+              </motion.div>
 
               {/* Email */}
               <motion.div 

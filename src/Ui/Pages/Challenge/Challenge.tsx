@@ -170,7 +170,7 @@ const SubmitChallengeDialog = ({ challengeId, challengeTitle }: { challengeId: s
             type="button"
             variant="outline"
             onClick={() => setOpen(false)}
-            className="border-green-500/30 bg-transparent text-green-300 hover:bg-green-500/10"
+            className="border-green-500/30 bg-transparent text-green-300 hover:bg-green-500"
             disabled={uploading}
           >
             Cancel
@@ -271,7 +271,7 @@ export const Challenge = () => {
             transition={{ delay: 0.3 }}
             className="text-green-400/70 font-mono text-xl font-bold"
           >
-            This is an open challenge, and everyone is welcome to participate The challenge will take place on 27th January.
+            This is an open challenge, and everyone is welcome to participate. The challenge will take place on 27th January.
           </motion.p>
         </motion.div>
 

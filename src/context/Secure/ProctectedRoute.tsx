@@ -12,9 +12,16 @@ const ProtectedRoute = ({ role }: { role: "user" | "admin" }) => {
   if (!isLoggedIn) {
     return <Navigate to="/" replace />;
   }
-//  If user role does not match, redirect to login Page
-  if (user?.role !== role && user?.role !== "admin") {
-    return <Navigate to="/" replace />;
+
+  const currentRole = String(user?.role ?? "").toLowerCase();
+  const isAdmin = currentRole === "admin";
+  const isUser = currentRole === "user";
+
+  // Admin-only routes: admin must match exactly.
+  // User routes: allow both user and admin.
+  const isAllowed = role === "admin" ? isAdmin : isUser || isAdmin;
+  if (!isAllowed) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;
