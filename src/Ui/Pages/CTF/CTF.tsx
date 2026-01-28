@@ -533,14 +533,14 @@ export const CTF = () => {
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => openHintConfirmation(challenge.id, hint.hintNumber, hint.cost)}
-                                    disabled={!!challenge.teamSolved}
+                                    disabled={!!challenge.teamSolved || teamPoints < hint.cost}
                                     className={`px-3 py-2 text-xs font-mono font-bold rounded border transition-all duration-200 ${
-                                      challenge.teamSolved 
+                                      challenge.teamSolved || teamPoints < hint.cost
                                         ? 'bg-slate-700/30 text-slate-500 border-slate-600/50 cursor-not-allowed'
                                         : 'bg-gradient-to-r from-cyan-500/20 to-teal-500/20 text-cyan-400 border-cyan-500/50 hover:from-cyan-500/30 hover:to-teal-500/30 hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(34,211,238,0.3)] cursor-pointer'
                                     }`}
                                   >
-                                    View (-{hint.cost}pts)
+                                    {teamPoints < hint.cost ? `Need ${hint.cost}pts` : `View (-${hint.cost}pts)`}
                                   </motion.button>
                                 </div>
                               )}
