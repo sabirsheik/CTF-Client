@@ -81,10 +81,16 @@ export const Login = () => {
     try {
       // Call login mutation
       const res = await loginMutation.mutateAsync(formData);
-      // On success, show success message and fetch user data
       toast.success(res.message || "Login successful");
+      
+      // Set localStorage after successful login response
+      localStorage.setItem('isLoggedIn', 'true');
+      
+      // Small delay to ensure cookie is set by browser
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       // Fetch user data and navigate to dashboard
-      fetchUser();
+      await fetchUser();
       navigate("/dashboard");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");

@@ -4,7 +4,9 @@ import apiFetch from "../api/fetchApi";
 // Signup API Call
 // handle signup data
 interface SignupData {
+  username: string;
   email: string;
+  universityName: string;
   password: string;
 }
 // useSignup hook
@@ -39,9 +41,6 @@ export const useLogin = () => {
         method: "POST",
         body: data,
       });
-    },
-    onSuccess: () => {
-      localStorage.setItem('isLoggedIn', 'true');
     },
   });
 };
@@ -126,14 +125,26 @@ export const useUser = () => {
     // Define query function
     queryKey: ["user"],
     queryFn: async () => {
-      const data = await apiFetch("/api/auth/user");
-      if (!data) {
+      try {
+        const data = await apiFetch("/api/auth/user");
+        console.log("Fetched user data:", data);
+        if (data && data.userData) {
+          // Ensure localStorage is set when we successfully fetch user
+          localStorage.setItem('isLoggedIn', 'true');
+          return data.userData;
+        }
+        // Clear localStorage if no valid user data
         localStorage.removeItem('isLoggedIn');
+        return null;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        // Don't remove isLoggedIn immediately - let caller handle it
+        throw error;
       }
-      return data ? data.userData : null;
     },
     enabled: !!localStorage.getItem('isLoggedIn'),
-    retry: false,
+    retry: 1, // Retry once
+    retryDelay: 500, // Wait 500ms before retry
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };

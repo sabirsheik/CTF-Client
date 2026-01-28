@@ -137,7 +137,7 @@ export const Submit = () => {
     setIsSubmitting(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const API_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
       
       // Prepare data with team members as comma-separated string
       const submitData = {

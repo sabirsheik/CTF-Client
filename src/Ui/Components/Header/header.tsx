@@ -2,6 +2,9 @@ import { ShieldCheck, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser, useLogout } from "../../../Hook/Auth/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import apiFetch from "../../../Hook/api/fetchApi";
+import { toast } from "sonner";
 
 export const Header: React.FC = () => {
   const { data: user, refetch: fetchUser } = useUser();
@@ -10,9 +13,71 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Fetch user's team status
+  const { data: teamsData } = useQuery({
+    queryKey: ["userTeamStatus"],
+    queryFn: async () => {
+      const res = await apiFetch("/api/teams?page=1&limit=50");
+      return res;
+    },
+    enabled: isLoggedIn && user?.role !== "admin",
+    staleTime: 30000, // 30 seconds
+  });
+
+  // Find user's team and member count
+  const myTeam = teamsData?.teams?.find((t: any) => t.viewer?.isMember);
+  const teamMemberCount = myTeam?.members?.length || 0;
+
   const isOnCTFPage =
     location.pathname === "/ctf" ||
     location.pathname === "/ctf/teams";
+
+  const handleCTFAccess = () => {
+    // Admins can always access
+    if (user?.role === "admin") {
+      navigate("/dashboard/auth/user/ctf");
+      return;
+    }
+
+    // Check if user has a team
+    if (!myTeam) {
+      toast.error("ACCESS DENIED", {
+        description: "Create or join a team before accessing CTF machines.",
+        duration: 5000,
+        style: {
+          background: "rgba(15, 23, 42, 0.95)",
+          border: "2px solid rgba(255, 255, 255, 0.5)",
+          color: "#ff0000",
+          fontFamily: "monospace",
+        },
+        classNames: {
+          description: "!text-white font-mono text-xs",
+        },
+      });
+      return;
+    }
+
+    // Check if team has at least 1 members
+    if (teamMemberCount < 1) {
+      toast.error("ACCESS DENIED", {
+        description: "Your team must have at least 2 members to access CTF machines.",
+        duration: 5000,
+        style: {
+          background: "rgba(15, 23, 42, 0.95)",
+          border: "2px solid rgba(239, 68, 68, 0.5)",
+          color: "#fcfbfb",
+          fontFamily: "monospace",
+        },
+        classNames: {
+          description: "!text-white font-mono text-xs",
+        },
+      });
+      return;
+    }
+
+    // All checks passed, navigate to CTF
+    navigate("/dashboard/auth/user/ctf");
+  };
 
   const LogoutUser = async () => {
     try {
@@ -82,7 +147,7 @@ export const Header: React.FC = () => {
         <div className="flex items-center gap-3">
           {isLoggedIn && isOnCTFPage && (
             <button
-              onClick={() => navigate("/dashboard/auth/user/ctf")}
+              onClick={handleCTFAccess}
               className="flex items-center gap-2 px-3 min-[470px]:px-5 py-2 font-mono text-xs min-[470px]:text-sm rounded-lg
                          border-2 border-green-500/50 text-green-400 bg-green-500/10
                          hover:bg-green-500/20 hover:border-green-400 transition-all cursor-pointer"

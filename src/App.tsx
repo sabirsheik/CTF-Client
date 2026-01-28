@@ -36,6 +36,18 @@ const AdminDashboard = lazy(() =>
   })),
 );
 
+const UserDetailPage = lazy(() =>
+  import("./Dashboards/Admin/pages/UserDetailPage").then((m) => ({
+    default: m.UserDetailPage,
+  })),
+);
+
+const LeaderboardPage = lazy(() =>
+  import("./Dashboards/Admin/pages/LeaderboardPage").then((m) => ({
+    default: m.LeaderboardPage,
+  })),
+);
+
 //  CTF PAGES (LAZY LOADED)
 const CTF = lazy(() =>
   import("./Ui/Pages/CTF/CTF").then((m) => ({
@@ -122,6 +134,9 @@ export const App = () => {
           {/* ADMIN DASHBOARD (PROTECTED) */}
           <Route element={<ProtectedRoute role="admin" />}>
             <Route path="/dashboard/auth/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/users/:userId" element={<UserDetailPage />} />
+            <Route path="/admin/leaderboard" element={<LeaderboardPage />} />
           </Route>
           {/* CATCH ALL ROUTE - REDIRECT BASED ON AUTH */}
           <Route

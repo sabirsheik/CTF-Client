@@ -1,0 +1,17 @@
+[0;1;32m●[0m nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (]8;;file://ctf-gateway/usr/lib/systemd/system/nginx.service/usr/lib/systemd/system/nginx.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Tue 2026-01-27 09:10:38 UTC; 2s ago
+       Docs: ]8;;man:nginx(8)man:nginx(8)]8;;
+    Process: 896084 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 896086 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 896087 (nginx)
+      Tasks: 3 (limit: 4655)
+     Memory: 3.9M (peak: 4.4M)
+        CPU: 80ms
+     CGroup: /system.slice/nginx.service
+             ├─[0;38;5;245m896087 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"[0m
+             ├─[0;38;5;245m896088 "nginx: worker process"[0m
+             └─[0;38;5;245m896089 "nginx: worker process"[0m
+
+Jan 27 09:10:38 ctf-gateway systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+Jan 27 09:10:38 ctf-gateway systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.

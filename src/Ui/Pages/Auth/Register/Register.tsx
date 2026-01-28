@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useSignup, useVerifyOtp } from "../../../../Hook/Auth/useAuth";
+import { useSignup } from "../../../../Hook/Auth/useAuth";
 import { toast } from "sonner";
-
 import {
   Card,
   CardHeader,
@@ -17,15 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Eye, EyeOff } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Eye, EyeOff, Clock } from "lucide-react";
+
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -40,54 +33,22 @@ export const Register = () => {
   });
 
   const [showNew, setShowNew] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [showOtpModal, setShowOtpModal] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 min timer
   const [errors, setErrors] = useState<{
     username?: string;
     email?: string;
     universityName?: string;
     phoneNumber?: string;
     password?: string;
-    otp?: string;
   }>({});
 
   const signupMutation = useSignup();
-  const verifyOtpMutation = useVerifyOtp();
+  // const verifyOtpMutation = useVerifyOtp();
 
-  // Timer for OTP modal
-  useEffect(() => {
-    if (!showOtpModal) return;
-
-    if (timeLeft <= 0) {
-      toast.error("OTP expired");
-      setShowOtpModal(false);
-      navigate("/register");
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft, showOtpModal, navigate]);
-
-  // Reset timer when modal opens
-  useEffect(() => {
-    if (showOtpModal) {
-      setTimeLeft(600);
-    }
-  }, [showOtpModal]);
-
-  // ✅ SAME handler, just extended professionally
+  //  SAME handler, just extended professionally
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name === "otp") {
-      setOtp(value);
-      return;
-    }
+   
 
     let updatedValue = value;
 
@@ -136,32 +97,14 @@ export const Register = () => {
 
     try {
       const res = await signupMutation.mutateAsync(formData);
-      toast.success(res.message || "OTP sent to your email");
-      setShowOtpModal(true);
+      toast.success(res.message || "Registration successful");
+      // setShowOtpModal(true);
+      navigate("/login");
     } catch (err: any) {
       toast.error(err.message || "Registration failed");
     }
   };
 
-  const handleVerifyOtp = async () => {
-    setErrors({});
-
-    try {
-      await verifyOtpMutation.mutateAsync({
-        email: formData.email,
-        otp,
-      });
-      toast.success("Account verified successfully");
-      navigate("/login");
-    } catch (err: any) {
-      setErrors({ otp: err.message || "Invalid OTP" });
-      toast.error(err.message || "OTP verification failed");
-    }
-  };
-
-  // Calculate minutes and seconds for timer display
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
 
   return (
     <>
@@ -255,7 +198,7 @@ export const Register = () => {
               <motion.div 
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.3 }} 
                 className="space-y-2"
               >
                 <Label htmlFor="phoneNumber" className="text-green-400 font-mono text-sm"> Phone</Label>
@@ -370,84 +313,7 @@ export const Register = () => {
         </Card>
       </motion.div>
       </div>
-      <Dialog open={showOtpModal} onOpenChange={(open) => !open ? null : setShowOtpModal(open)}>
-        <DialogContent className="sm:max-w-sm bg-slate-900/95 backdrop-blur-xl shadow-2xl border-2 border-green-500/30 overflow-hidden" onInteractOutside={(e) => e.preventDefault()}>
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
-          <DialogHeader className="relative z-10">
-            <DialogTitle className="text-green-400 text-center font-mono text-2xl glow-text">
-               VERIFY OTP 
-            </DialogTitle>
-            <DialogDescription className="text-center text-gray-400 font-mono text-sm">
-              Enter 6-digit verification code_
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* Timer */}
-          <motion.div 
-            className="text-center text-sm font-medium text-gray-400 mt-3 font-mono flex items-center justify-center gap-2 relative z-10"
-            animate={timeLeft <= 60 ? { scale: [1, 1.05, 1] } : {}}
-            transition={{ duration: 0.5, repeat: timeLeft <= 60 ? Infinity : 0 }}
-          >
-            <Clock className="w-4 h-4" />
-            <span className={timeLeft <= 60 ? "text-red-400" : "text-green-400"}>
-              {minutes}:{seconds.toString().padStart(2, "0")}
-            </span>
-          </motion.div>
-
-          <Separator className="bg-green-500/20" />
-
-          <div className="space-y-5 mt-4 relative z-10">
-            <Input
-              name="otp"
-              maxLength={6}
-              value={otp}
-              onChange={handleInputChange}
-              className="text-center tracking-widest text-xl bg-slate-800/50 border-green-500/30 text-green-300 placeholder:text-gray-600 focus:border-green-400 focus:ring-green-400/20 font-mono"
-              placeholder="••••••"
-            />
-
-            {errors.otp && (
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-red-400 text-center font-mono"
-              >
-                ! {errors.otp}
-              </motion.p>
-            )}
-
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Button
-                onClick={handleVerifyOtp}
-                disabled={verifyOtpMutation.isPending}
-                className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border-2 border-green-500/50 hover:border-green-400 font-mono font-bold transition-all"
-              >
-                {verifyOtpMutation.isPending
-                  ? " VERIFYING... "
-                  : " VERIFY OTP "}
-              </Button>
-            </motion.div>
-          </div>
-
-          <Separator className="bg-green-500/20" />
-
-          {/* Footer Actions */}
-          <div className="text-center text-sm mt-3 relative z-10">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={() => setShowOtpModal(false)}
-              className="block mx-auto text-gray-400 hover:text-green-400 font-mono transition-colors"
-            >
-              &gt; Cancel
-            </motion.button>
-          </div>
-        </DialogContent>
-      </Dialog>
+     
     </>
   );
 };

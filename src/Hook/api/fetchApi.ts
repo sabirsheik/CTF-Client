@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
 
 // Fetch options interface
 interface FetchOptions extends RequestInit {
@@ -40,8 +40,6 @@ const apiFetch = async (endpoint: string, options: FetchOptions = {}) => {
       errorData.message || `HTTP error! status: ${response.status}`
     );
   }
-
   return response.json();
 };
-
 export default apiFetch;
